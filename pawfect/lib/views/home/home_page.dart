@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:pawfect/views/home/DetailsPage/details_page.dart';
 import '../../Helper/Painter/curved_painter.dart';
 import 'MatchPage/match_page.dart';
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     
       body: Stack(
         children: [
           Container(
@@ -49,6 +52,7 @@ class _HomePageState extends State<HomePage> {
           CustomScrollView(
             slivers: [
               SliverAppBar(
+                automaticallyImplyLeading: false,
                 elevation: 0,
                 backgroundColor: Colors.transparent,
                 actionsIconTheme: IconThemeData(opacity: 0.0),
@@ -67,16 +71,32 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                         ),
                       ),
-                      Container(
-                        height: 42,
-                        width: 42,
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Icon(Icons.notifications_none_outlined, color: Colors.white),
+                      Row(
+                        children: [
+                          Container(
+                            height: 42,
+                            width: 42,
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Icon(Icons.notifications_none_outlined, color: Colors.white),
+                          ),
+                          SizedBox(width: 5,),
+                          Container(
+                            height: 42,
+                            width: 42,
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: GestureDetector(onTap: (){Get.to(signInsignUp());},child: Icon(Icons.login_outlined, color: Colors.white)),
+                          ),
+                        ],
                       ),
+                      
                     ],
                   ),
                 ),
