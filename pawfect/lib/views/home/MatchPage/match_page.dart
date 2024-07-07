@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 class MatchPage extends StatefulWidget {
-
   @override
   _MatchPageState createState() => _MatchPageState();
 }
@@ -9,10 +9,12 @@ class MatchPage extends StatefulWidget {
 class _MatchPageState extends State<MatchPage> {
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
+
     return Scaffold(
       body: Container(
-        decoration: new BoxDecoration(
-          gradient: new LinearGradient(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
             end: const Alignment(0.0, 0.4),
             begin: const Alignment(0.0, -1),
             colors: <Color>[
@@ -25,7 +27,7 @@ class _MatchPageState extends State<MatchPage> {
           children: [
             Spacer(flex: 2),
             Text(
-              "It's a match!",
+              localization!.itsAMatch,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,
@@ -33,7 +35,7 @@ class _MatchPageState extends State<MatchPage> {
               ),
             ),
             Text(
-              "You and Mirian have liked each other.",
+              localization.youAndMirianLikedEachOther,
               style: TextStyle(
                 color: Colors.grey[300],
                 fontSize: 16,
@@ -168,7 +170,7 @@ class _MatchPageState extends State<MatchPage> {
               ),
               child: Center(
                 child: Text(
-                  "Message her",
+                  localization.messageHer,
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -191,7 +193,7 @@ class _MatchPageState extends State<MatchPage> {
                 },
                 child: Center(
                   child: Text(
-                    "Keep swiping",
+                    localization.keepSwiping,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

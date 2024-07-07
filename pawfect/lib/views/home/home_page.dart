@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';// Import generated localizations
 import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:pawfect/views/home/DetailsPage/details_page.dart';
 import '../../Helper/Painter/curved_painter.dart';
@@ -23,8 +24,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
+
     return Scaffold(
-     
       body: Stack(
         children: [
           Container(
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 begin: const Alignment(0.0, -1),
                 colors: <Color>[
                   Colors.pink,
-                  Color(0xFFFF5722)
+                  Color(0xFFFF5722),
                 ],
               ),
             ),
@@ -65,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Nearby',
+                        localization!.nearby,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -92,11 +94,15 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.black.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(100),
                             ),
-                            child: GestureDetector(onTap: (){Get.to(signInsignUp());},child: Icon(Icons.login_outlined, color: Colors.white)),
+                            child: GestureDetector(
+                              onTap: () {
+                                Get.to(SignInSignUp());
+                              },
+                              child: Icon(Icons.login_outlined, color: Colors.white),
+                            ),
                           ),
                         ],
                       ),
-                      
                     ],
                   ),
                 ),

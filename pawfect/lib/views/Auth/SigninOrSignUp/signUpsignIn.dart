@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawfect/views/Auth/SignIn/signIn.dart';
+import 'package:pawfect/views/Auth/SignUp/signup.dart';
 import 'package:pawfect/views/home/home_page.dart';
 import '../../../Helper/Painter/curved_painter.dart';
 import '../../home/TabsPage/tabs_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
-class signInsignUp extends StatefulWidget {
+class SignInSignUp extends StatefulWidget {
   @override
-  _signInsignUpState createState() => _signInsignUpState();
+  _SignInSignUpState createState() => _SignInSignUpState();
 }
 
-class _signInsignUpState extends State<signInsignUp> {
+class _SignInSignUpState extends State<SignInSignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,24 +50,28 @@ class _signInsignUpState extends State<signInsignUp> {
                   height: 180,
                 ),
                 Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.4 - 100,
-                    child: Container(
-                        height: 400,
-                        width: 150,
-                        child: Image.asset('assets/icons/gif/pets.gif'))),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.4 - 100,
+                  child: Container(
+                    height: 400,
+                    width: 150,
+                    child: Image.asset('assets/icons/gif/pets.gif'),
+                  ),
+                ),
                 Container(
                   height: 75,
                   width: MediaQuery.of(context).size.width,
-                  child: const Center(
-                      child: Text(
-                    "Pawfect",
-                    style: TextStyle(
+                  child: Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.title,
+                      style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Lato'),
-                  )),
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: Container(
@@ -75,79 +82,92 @@ class _signInsignUpState extends State<signInsignUp> {
                           height: 50,
                         ),
                         Container(
-                            width: MediaQuery.of(context).size.width / 2 + 80,
-                            height: 60,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color.fromARGB(255, 255, 87, 34)
-                                            .withOpacity(0.6),
-                                    elevation: 15.0),
-                                onPressed: () {},
-                                child: const Text(
-                                  "Sign up",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Popins',
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ))),
+                          width: MediaQuery.of(context).size.width / 2 + 80,
+                          height: 60,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 255, 87, 34).withOpacity(0.6),
+                              elevation: 15.0,
+                            ),
+                            onPressed: () {
+                              Get.to(SignUp());
+                            },
+                            child: Hero(
+                              tag: "SignUp",
+                              child: Text(
+                                AppLocalizations.of(context)!.register,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Popins',
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         const SizedBox(
                           height: 30,
                         ),
-                        Container(
+                        Hero(
+                          tag: "SignIn",
+                          child: Container(
                             width: MediaQuery.of(context).size.width / 2 + 80,
                             height: 60,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 255, 87, 34)
-                                          .withOpacity(0.6),
-                                  elevation: 15.0),
-                              onPressed: () {Get.to(TabsPage(title: 'tinder',));},
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: 'Popins',
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+                                backgroundColor: const Color.fromARGB(255, 255, 87, 34).withOpacity(0.6),
+                                elevation: 15.0,
                               ),
-                            )),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Container(
-                          child: const Text(
-                            "OR",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Popins',
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                              onPressed: () {
+                                Get.to(SignIn());
+                              },
+                              child: Text(
+                                AppLocalizations.of(context)!.login,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Popins',
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(
                           height: 30,
                         ),
                         Container(
-                            width: MediaQuery.of(context).size.width / 2 + 80,
-                            height: 60,
+                          child: Text(
+                            AppLocalizations.of(context)!.or,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Popins',
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 2 + 80,
+                          height: 60,
                           child: ElevatedButton(
-                            
                             style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 255, 87, 34)
-                                        .withOpacity(0.6),
-                                elevation: 15.0),
+                              backgroundColor: const Color.fromARGB(255, 255, 87, 34).withOpacity(0.6),
+                              elevation: 15.0,
+                            ),
                             onPressed: () {},
-                            child: const Text(
-                              "Google",
+                            child: Text(
+                              "Google", // Replace with localized string if available
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'Popins',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
+                                color: Colors.white,
+                                fontFamily: 'Popins',
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         )

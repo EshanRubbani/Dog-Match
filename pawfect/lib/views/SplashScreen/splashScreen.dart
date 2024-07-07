@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import '../../Helper/Painter/curved_painter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_gen/gen_l10n/app_localization.dart';  
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -14,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-     Get.to(signInsignUp());
+     Get.to(SignInSignUp());
     });
   }
   @override
@@ -75,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
         isRepeatingAnimation: false,
 
         animatedTexts: [
-          TyperAnimatedText('Pawfect',textStyle: TextStyle(color: Colors.deepOrange.shade400,fontSize: 35,fontWeight: FontWeight.bold),speed: const Duration(milliseconds: 300),),
+          TyperAnimatedText(AppLocalizations.of(context)!.title,textStyle: TextStyle(color: Colors.deepOrange.shade400,fontSize: 35,fontWeight: FontWeight.bold),speed: const Duration(milliseconds: 300),),
           
         ],
         onTap: () {

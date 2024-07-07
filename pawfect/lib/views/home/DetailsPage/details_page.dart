@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import '../MatchPage/match_page.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -11,6 +10,8 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -79,7 +80,7 @@ class _DetailsPageState extends State<DetailsPage> {
                               children: [
                                 SizedBox(width: 2),
                                 Text(
-                                  'Mirian, 24',
+                                  localization!.detailsPageTitle,
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -121,7 +122,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                   size: 14,
                                 ),
                                 Text(
-                                  'New York . 25km',
+                                  localization.locationLabel,
                                   style: TextStyle(
                                     fontSize: 10,
                                     color: Colors.grey[400],
@@ -280,7 +281,7 @@ class _DetailsPageState extends State<DetailsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Interests',
+                            localization!.interestsLabel,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -288,7 +289,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ),
                           Text(
-                            '3 Similar',
+                            localization.similarLabel,
                             style: TextStyle(
                               color: Colors.deepOrange,
                               fontSize: 16,
@@ -318,7 +319,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Shopping',
+                                  localization.shoppingInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -342,7 +343,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Music',
+                                  localization.musicInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -366,7 +367,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Coffe',
+                                  localization.coffeeInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -397,7 +398,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Books',
+                                  localization.booksInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -421,7 +422,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Travel',
+                                  localization.travelInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -445,7 +446,7 @@ class _DetailsPageState extends State<DetailsPage> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Basketball',
+                                  localization.basketballInterest,
                                   style: TextStyle(
                                     color: Colors.deepOrange,
                                   ),
@@ -466,7 +467,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page, testing the description of the page...',
+                        localization!.description,
                         style: TextStyle(
                           color: Colors.grey[600],
                           // fontWeight: FontWeight.bold,
