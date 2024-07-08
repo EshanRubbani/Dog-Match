@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawfect/views/Auth/SignIn/signIn.dart';
-import 'package:pawfect/views/Auth/SignUp/signup.dart';
-import 'package:pawfect/views/home/home_page.dart';
+import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
+import 'package:DogMatch/views/Auth/SignUp/signup.dart';
+import 'package:DogMatch/views/home/home_page.dart';
 import '../../../Helper/Painter/curved_painter.dart';
 import '../../home/TabsPage/tabs_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';

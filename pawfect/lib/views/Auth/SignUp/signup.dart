@@ -1,9 +1,13 @@
+import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:pawfect/Helper/Constants/Colors.dart';
-import 'package:pawfect/Helper/Painter/curved_painter.dart';
-import 'package:pawfect/views/Auth/SignIn/signIn.dart';
+import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/Helper/Painter/curved_painter.dart';
+import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -17,6 +21,16 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+@override
+void dispose() {
+  firstNameController.dispose();
+  lastNameController.dispose();
+  emailController.dispose();
+  passwordController.dispose();
+  confirmPasswordController.dispose();
+
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,8 +97,12 @@ class _SignUpState extends State<SignUp> {
                                         textInputAction: TextInputAction.next,
                                         onSaved: (firstname) {},
                                         decoration: InputDecoration(
-                                          hintText: AppLocalizations.of(context)!.firstName,
-                                          label: Text(AppLocalizations.of(context)!.firstName),
+                                          hintText:
+                                              AppLocalizations.of(context)!
+                                                  .firstName,
+                                          label: Text(
+                                              AppLocalizations.of(context)!
+                                                  .firstName),
                                           labelStyle: TextStyle(
                                               color: KAppColors.primaryColor),
                                           border: OutlineInputBorder(
@@ -107,7 +125,9 @@ class _SignUpState extends State<SignUp> {
                                         onSaved: (lastname) {},
                                         decoration: InputDecoration(
                                           focusColor: KAppColors.secondaryColor,
-                                          labelText: AppLocalizations.of(context)!.lastName,
+                                          labelText:
+                                              AppLocalizations.of(context)!
+                                                  .lastName,
                                           labelStyle: TextStyle(
                                               color: KAppColors.primaryColor),
                                           border: OutlineInputBorder(
@@ -127,7 +147,8 @@ class _SignUpState extends State<SignUp> {
                                     onSaved: (email) {},
                                     decoration: InputDecoration(
                                       focusColor: KAppColors.secondaryColor,
-                                      labelText: AppLocalizations.of(context)!.email,
+                                      labelText:
+                                          AppLocalizations.of(context)!.email,
                                       labelStyle: TextStyle(
                                           color: KAppColors.primaryColor),
                                       border: OutlineInputBorder(
@@ -145,7 +166,8 @@ class _SignUpState extends State<SignUp> {
                                     onSaved: (password) {},
                                     decoration: InputDecoration(
                                       focusColor: KAppColors.secondaryColor,
-                                      labelText: AppLocalizations.of(context)!.password,
+                                      labelText: AppLocalizations.of(context)!
+                                          .password,
                                       labelStyle: TextStyle(
                                           color: KAppColors.primaryColor),
                                       border: OutlineInputBorder(
@@ -163,7 +185,8 @@ class _SignUpState extends State<SignUp> {
                                     onSaved: (cpassword) {},
                                     decoration: InputDecoration(
                                       focusColor: KAppColors.secondaryColor,
-                                      labelText: AppLocalizations.of(context)!.confirmPassword,
+                                      labelText: AppLocalizations.of(context)!
+                                          .confirmPassword,
                                       labelStyle: TextStyle(
                                           color: KAppColors.primaryColor),
                                       border: OutlineInputBorder(
@@ -182,8 +205,14 @@ class _SignUpState extends State<SignUp> {
                                           const Color.fromARGB(255, 255, 87, 34)
                                               .withOpacity(0.6),
                                       elevation: 15.0),
-                                  onPressed: () {},
-                                  child:  Text(
+                                  onPressed: () {
+                                    if (passwordController.text ==
+                                            confirmPasswordController.text &&
+                                        emailController.text.isNotEmpty) {
+                                          signUp(firstNameController.text, lastNameController.text, emailController.text, passwordController.text);
+                                        }
+                                  },
+                                  child: Text(
                                     AppLocalizations.of(context)!.register,
                                     style: TextStyle(
                                         color: Colors.white,
@@ -200,7 +229,8 @@ class _SignUpState extends State<SignUp> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)!.alreadyAccount,
+                                    AppLocalizations.of(context)!
+                                        .alreadyAccount,
                                     style: TextStyle(
                                       fontSize: 18,
                                     ),
@@ -231,4 +261,27 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
+void signUp(String fname, String lname, String email, String password) async {
+ 
+  try {
+    final UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+
+    // Check if user is not null before accessing uid
+    if (userCredential.user != null) {
+      await FirebaseFirestore.instance.collection('Profiles').doc(userCredential.user!.uid).set({
+        'firstName': fname,
+        'lastName': lname,
+      });
+  
+      Get.snackbar("Success", "Account has been successfully created");
+      Get.offAll(()=> SignIn());
+    } else {
+      Get.snackbar("Error", "Failed to create account");
+    }
+  } on FirebaseAuthException catch (e) {
+    Get.snackbar("Error", e.toString());
+  }
+}
+
 }
