@@ -1,10 +1,12 @@
+import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:pawfect/Helper/Constants/Colors.dart';
-import 'package:pawfect/Helper/Painter/curved_painter.dart';
-import 'package:pawfect/views/Auth/SignUp/signup.dart';
-import 'package:pawfect/views/home/TabsPage/tabs_page.dart';
+import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/Helper/Painter/curved_painter.dart';
+import 'package:DogMatch/views/Auth/SignUp/signup.dart';
+import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -115,7 +117,7 @@ class _SignInState extends State<SignIn> {
                                     elevation: 15.0,
                                   ),
                                   onPressed: () {
-                                    Get.to(TabsPage(title: AppLocalizations.of(context)!.title));
+                                    signIn(emailController.text, passwordController.text);
                                   },
                                   child:  Text(
                                     AppLocalizations.of(context)!.login, // This should ideally be localized
@@ -166,4 +168,20 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+
+  void signIn(String email, String password) async {
+  try {
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+
+    Get.to(TabsPage());
+      Get.snackbar("Success", "Logged in succesfully");
+      
+  } on FirebaseAuthException catch (e) {
+    Get.snackbar("Error", e.toString());
+  }
+
+
+}
+
 }
