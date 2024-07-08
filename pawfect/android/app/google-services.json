@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "393969785546",
+    "project_id": "dogmatch-d1333",
+    "storage_bucket": "dogmatch-d1333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393969785546:android:a430e781f02348d58b3233",
+        "android_client_info": {
+          "package_name": "com.dogmatch.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADTdkOu-sTWRgjW5VgGGeKMDtDwsncm4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

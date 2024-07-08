@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
+import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import '../../Helper/Painter/curved_painter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';  

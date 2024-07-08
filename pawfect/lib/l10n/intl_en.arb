@@ -6,7 +6,7 @@
   "or": "OR",
   "firstName": "First Name",
   "lastName": "Last Name",
-  "email": "EMAIL",
+  "email": "Email",
   "password": "Password",
   "confirmPassword": "Confirm Password",
   "alreadyAccount": "Already have an account?",

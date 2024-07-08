@@ -1,12 +1,17 @@
+import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
+import 'package:DogMatch/views/SplashScreen/splashScreen.dart';
+import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawfect/views/Auth/SignUp/signup.dart';
-import 'package:pawfect/views/SplashScreen/splashScreen.dart';
-import 'package:pawfect/views/home/TabsPage/tabs_page.dart';
-import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';  
-
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(MyApp());
 }
 
@@ -26,7 +31,17 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       // home: TabsPage(title: 'tinder',),
-      home: SplashScreen(),
+    home: _buildHomePage(),
     );
+
+
+    
+  }
+    Widget _buildHomePage() {
+    // Check if there is a current user logged in
+    User? currentUser = FirebaseAuth.instance.currentUser;
+
+    // Return either TabsPage or SplashScreen based on authentication state
+    return currentUser != null ? TabsPage() : SplashScreen();
   }
 }
