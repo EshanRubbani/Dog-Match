@@ -1,8 +1,10 @@
+import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';// Import generated localizations
-import 'package:pawfect/views/Auth/SigninOrSignUp/signUpsignIn.dart';
-import 'package:pawfect/views/home/DetailsPage/details_page.dart';
+
+import 'package:DogMatch/views/home/DetailsPage/details_page.dart';
 import '../../Helper/Painter/curved_painter.dart';
 import 'MatchPage/match_page.dart';
 
@@ -67,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        localization!.nearby,
+                       FirebaseAuth.instance.currentUser!.email.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -96,7 +98,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                Get.to(SignInSignUp());
+                              FirebaseAuth.instance.signOut();
+                              Get.offAll(SignInSignUp());
                               },
                               child: Icon(Icons.login_outlined, color: Colors.white),
                             ),
