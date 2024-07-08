@@ -1,11 +1,11 @@
+import 'package:DogMatch/views/home/ProfileScreen/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../home_page.dart';
 
 class TabsPage extends StatefulWidget {
-  TabsPage({required this.title});
-  final String title;
+
   @override
   _TabsPageState createState() => _TabsPageState();
 }
@@ -15,13 +15,7 @@ class _TabsPageState extends State<TabsPage>
   List<Widget> _tabs = [
     HomePage(),
     Center(child: Icon(Icons.chat_bubble_outline)),
-    Center(
-      child: SvgPicture.asset(
-        "assets/icons/svg/user.svg",
-        height: 20,
-        color: Colors.black,
-      ),
-    ),
+    ProfileScreen(),
   ];
 
   late TabController _controller;
