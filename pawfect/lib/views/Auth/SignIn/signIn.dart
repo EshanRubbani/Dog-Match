@@ -1,3 +1,4 @@
+import 'package:DogMatch/views/Auth/ForgetPassword/forgetpass.dart';
 import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -153,6 +154,31 @@ class _SignInState extends State<SignIn> {
                                     ),
                                   ),
                                 ],
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.forgot,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.to(() => ForgotPassword());
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)!.reset,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: KAppColors.primaryColor),
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
@@ -170,14 +196,24 @@ class _SignInState extends State<SignIn> {
   }
 
   void signIn(String email, String password) async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.orangeAccent.shade400,
+               
+              ),
+            ));
   try {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-
+Navigator.of(context).pop();
     Get.to(TabsPage());
       Get.snackbar("Success", "Logged in succesfully");
       
   } on FirebaseAuthException catch (e) {
+    Navigator.of(context).pop();
     Get.snackbar("Error", e.toString());
   }
 
