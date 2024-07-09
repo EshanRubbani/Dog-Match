@@ -1,3 +1,5 @@
+import 'package:DogMatch/views/Auth/ProfileImageUpload/dpUpload.dart';
+import 'package:DogMatch/views/Auth/Verification/verifyEmail.dart';
 import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,16 +23,17 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-@override
-void dispose() {
-  firstNameController.dispose();
-  lastNameController.dispose();
-  emailController.dispose();
-  passwordController.dispose();
-  confirmPasswordController.dispose();
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
 
-  super.dispose();
-}
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +41,12 @@ void dispose() {
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.3,
-            margin: EdgeInsets.only(bottom: 60),
+            margin: const EdgeInsets.only(bottom: 60),
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
-                end: const Alignment(0.0, 0.4),
-                begin: const Alignment(0.0, -1),
+                end: Alignment(0.0, 0.4),
+                begin: Alignment(0.0, -1),
                 colors: <Color>[Colors.pink, Color(0xFFFF5722)],
               ),
             ),
@@ -61,7 +64,7 @@ void dispose() {
               width: double.infinity,
               child: Column(
                 children: [
-                  SizedBox(height: 275),
+                  const SizedBox(height: 275),
                   Container(
                     height: MediaQuery.of(context).size.height - 280,
                     width: double.infinity,
@@ -209,8 +212,12 @@ void dispose() {
                                     if (passwordController.text ==
                                             confirmPasswordController.text &&
                                         emailController.text.isNotEmpty) {
-                                          signUp(firstNameController.text, lastNameController.text, emailController.text, passwordController.text);
-                                        }
+                                      signUp(
+                                          firstNameController.text,
+                                          lastNameController.text,
+                                          emailController.text,
+                                          passwordController.text);
+                                    }
                                   },
                                   child: Text(
                                     AppLocalizations.of(context)!.register,
@@ -261,27 +268,40 @@ void dispose() {
       ),
     );
   }
-void signUp(String fname, String lname, String email, String password) async {
- 
-  try {
-    final UserCredential userCredential = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
 
-    // Check if user is not null before accessing uid
-    if (userCredential.user != null) {
-      await FirebaseFirestore.instance.collection('Profiles').doc(userCredential.user!.uid).set({
-        'firstName': fname,
-        'lastName': lname,
-      });
-  
-      Get.snackbar("Success", "Account has been successfully created");
-      Get.offAll(()=> SignIn());
-    } else {
-      Get.snackbar("Error", "Failed to create account");
+  void signUp(String fname, String lname, String email, String password) async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.orangeAccent.shade400,
+               
+              ),
+            ));
+    try {
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      // Check if user is not null before accessing uid
+      if (userCredential.user != null) {
+        await FirebaseFirestore.instance
+            .collection('Profiles')
+            .doc(userCredential.user!.uid)
+            .set({
+          'firstName': fname,
+          'lastName': lname,
+        });
+        Navigator.of(context).pop();
+        Get.snackbar("Success", "Account has been successfully created");
+        Get.offAll(() => DpUpload());
+      } else {
+        Navigator.of(context).pop();
+        Get.snackbar("Error", "Failed to create account");
+      }
+    } on FirebaseAuthException catch (e) {
+      Navigator.of(context).pop();
+      Get.snackbar("Error", e.toString());
     }
-  } on FirebaseAuthException catch (e) {
-    Get.snackbar("Error", e.toString());
   }
-}
-
 }
