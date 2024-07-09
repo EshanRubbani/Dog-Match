@@ -32,5 +32,7 @@
   "booksInterest": "Books",
   "travelInterest": "Travel",
   "basketballInterest": "Basketball",
-  "description": "Testing the description of the page..."
+  "description": "Testing the description of the page...",
+  "forgot": "Forgot Password?",
+  "reset": "Reset"
 }

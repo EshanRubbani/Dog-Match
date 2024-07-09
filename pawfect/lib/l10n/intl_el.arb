@@ -32,5 +32,7 @@
   "booksInterest": "Βιβλία",
   "travelInterest": "Ταξίδια",
   "basketballInterest": "Μπάσκετ",
-  "description": "Δοκιμή περιγραφής της σελίδας..."
+  "description": "Δοκιμή περιγραφής της σελίδας...",
+  "forgot": "Ξεχάσατε τον κωδικό σας?",
+  "reset": "Επαναφορά"
 }

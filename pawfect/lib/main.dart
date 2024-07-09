@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
       title: 'DogMatch',
       theme: ThemeData(
         fontFamily: 'Popins',
+      
+        useMaterial3: true, 
+        
         primarySwatch: Colors.deepOrange,
         brightness: Brightness.light,
       ),
