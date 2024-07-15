@@ -1,5 +1,6 @@
 import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
 import 'package:DogMatch/views/SplashScreen/splashScreen.dart';
+import 'package:DogMatch/views/home/AddPostPage/add.dart';
 import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
       
         useMaterial3: true, 
         
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         primarySwatch: Colors.deepOrange,
         brightness: Brightness.light,
       ),
@@ -46,5 +48,6 @@ class MyApp extends StatelessWidget {
 
     // Return either TabsPage or SplashScreen based on authentication state
     return currentUser != null ? TabsPage() : SplashScreen();
+   
   }
 }

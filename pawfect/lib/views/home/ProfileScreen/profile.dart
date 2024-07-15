@@ -1,4 +1,5 @@
 import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
+import 'package:DogMatch/views/home/AddPostPage/add.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,12 @@ class ProfileScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 18),
                     ),
                     SizedBox(height: 10),
-                   
+                    ElevatedButton(
+                      onPressed: () {
+                     Get.to( Add());
+                      },
+                      child: Text('Add Post'),
+                    ),
                     SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
