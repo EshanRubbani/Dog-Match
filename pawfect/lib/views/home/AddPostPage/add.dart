@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/views/home/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -90,47 +92,47 @@ class _AddState extends State<Add> {
   }
 
   void upload() async {
+    final String id = DateTime.now().toString();
     if (nameController.text.isNotEmpty &&
         ageController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         interestsController.text.isNotEmpty &&
         _selectedFiles != null &&
         _selectedFiles!.isNotEmpty) {
-      String email = FirebaseAuth.instance.currentUser!.email!;
-      try {
-        // Show progress dialog
+
+        //add loading 
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Uploading Files'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 20),
-                  Text('Please wait...'),
-                ],
-              ),
+            return Center(
+              child: CircularProgressIndicator(),
             );
           },
         );
 
-        await FirebaseFirestore.instance.collection("Post").doc(email).set({
+
+      String email = FirebaseAuth.instance.currentUser!.email!;
+      try {
+       
+       List<String> urls = await uploadAllFiles(_selectedFiles!.map((file) => File(file.path)).toList(),id);
+
+        
+
+        await FirebaseFirestore.instance.collection("Posts").doc(id).set({
           "name": nameController.text,
           "age": ageController.text,
           "description": descriptionController.text,
           "interests": interestsController.text,
+          "owner": FirebaseAuth.instance.currentUser!.email,
+          "urls": urls
         });
-
-        await uploadAllFiles(_selectedFiles!.map((file) => File(file.path)).toList());
-
-        // Close progress dialog
+        
         Navigator.of(context).pop();
-
+  
         // Show success snackbar
         Get.snackbar("Success", "Posted Successfully");
+        Get.to(() => HomePage());
       } catch (e) {
         // Close progress dialog
         Navigator.of(context).pop();
@@ -143,28 +145,35 @@ class _AddState extends State<Add> {
     }
   }
 
-  Future<void> uploadAllFiles(List<File> selectedFiles) async {
-    String email = FirebaseAuth.instance.currentUser!.email!;
-    try {
-      for (File file in selectedFiles) {
-        String fileName = file.path.split('/').last; // Get the file name from the path
-        Reference storageReference = FirebaseStorage.instance.ref('$email/$fileName');
-        UploadTask uploadTask = storageReference.putFile(file);
+ Future<List<String>> uploadAllFiles(List<File> selectedFiles, String id) async {
+  String email = FirebaseAuth.instance.currentUser!.email!;
+  List<String> uploadedFileUrls = [];
 
-        // You can optionally listen to the upload progress
-        uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-          print('Task state: ${snapshot.state}');
-          print('Progress: ${(snapshot.bytesTransferred / snapshot.totalBytes) * 100} %');
-        });
+  try {
+    for (File file in selectedFiles) {
+      String fileName = file.path.split('/').last; // Get the file name from the path
+      Reference storageReference = FirebaseStorage.instance.ref('$id/$fileName');
+      UploadTask uploadTask = storageReference.putFile(file);
 
-        await uploadTask;
-        print('File uploaded: $fileName');
-      }
-    } catch (e) {
-      print('Error uploading files: $e');
-      throw Exception('Failed to upload files: $e');
+      // Listen to the upload task
+      await uploadTask.whenComplete(() {});
+
+      // Get the download URL for the uploaded file
+      String downloadURL = await storageReference.getDownloadURL();
+
+      // Store the download URL in the list
+      uploadedFileUrls.add(downloadURL);
+
+      print('File uploaded: $fileName');
     }
+
+    return uploadedFileUrls; // Return the list of download URLs
+  } catch (e) {
+    print('Error uploading files: $e');
+    throw Exception('Failed to upload files: $e');
   }
+}
+
 
   Container buildMedia(Size size) {
     return Container(
