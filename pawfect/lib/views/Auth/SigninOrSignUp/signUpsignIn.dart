@@ -1,3 +1,4 @@
+import 'package:DogMatch/Helper/LangController/langcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
@@ -13,8 +14,10 @@ class SignInSignUp extends StatefulWidget {
 }
 
 class _SignInSignUpState extends State<SignInSignUp> {
+  
   @override
   Widget build(BuildContext context) {
+     final LocalizationController localizationController = Get.find();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -61,16 +64,34 @@ class _SignInSignUpState extends State<SignInSignUp> {
                 Container(
                   height: 75,
                   width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.title,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lato',
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.title,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Lato',
+                          ),
+                        ),
                       ),
-                    ),
+                      Center(
+        child: DropdownButton<String>(
+          value: Get.locale?.languageCode ?? 'en',
+          items: [
+            DropdownMenuItem(value: 'en', child: Text('English')),
+            DropdownMenuItem(value: 'el', child: Text('Greek')),
+          ],
+          onChanged: (String? value) {
+            if (value != null) {
+              localizationController.changeLanguage(value);
+            }
+          },
+        ),
+      ),
+                    ],
                   ),
                 ),
                 Expanded(
