@@ -2,9 +2,9 @@ import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localization.dart';// Import generated localizations
-
+import 'package:flutter_gen/gen_l10n/app_localization.dart'; // Import generated localizations
 import 'package:DogMatch/views/home/DetailsPage/details_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../Helper/Painter/curved_painter.dart';
 import 'MatchPage/match_page.dart';
 
@@ -17,12 +17,32 @@ class _HomePageState extends State<HomePage> {
   int indexPage = 0;
   int indexType = 0;
   int isCurrentItem = 0;
+  List<String> images = [];
 
-  final List<String> images = [
-    "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
-    "https://images.unsplash.com/photo-1504826260979-242151ee45b7?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1504826260979-242151ee45b7?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchImages();
+  }
+
+  Future<void> fetchImages() async {
+    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+    QuerySnapshot querySnapshot = await posts.get();
+    List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+    
+    List<String> fetchedImages = [];
+    for (var doc in documents) {
+      var data = doc.data() as Map<String, dynamic>;
+      List<dynamic> urls = data['urls'];
+      if (urls.isNotEmpty) {
+        fetchedImages.add(urls[0] as String); // Get the first image URL from each document
+      }
+    }
+
+    setState(() {
+      images = fetchedImages;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                       FirebaseAuth.instance.currentUser!.email.toString(),
+                        FirebaseAuth.instance.currentUser!.email.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -98,8 +118,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: GestureDetector(
                               onTap: () {
-                              FirebaseAuth.instance.signOut();
-                              Get.offAll(SignInSignUp());
+                                FirebaseAuth.instance.signOut();
+                                Get.offAll(SignInSignUp());
                               },
                               child: Icon(Icons.login_outlined, color: Colors.white),
                             ),
