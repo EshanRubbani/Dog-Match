@@ -13,7 +13,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
       Get.to(SignInSignUp());
@@ -24,83 +23,92 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            margin: EdgeInsets.only(bottom: 60),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                end: const Alignment(0.0, 0.4),
-                begin: const Alignment(0.0, -1),
-                colors: <Color>[Colors.pink, Color(0xFFFF5722)],
-              ),
-            ),
-          ),
-          CustomPaint(
-            size: Size(
-              MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 0.31,
-            ),
-            painter: CurvedPainter(),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 400,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isDesktop = constraints.maxWidth >= 600;
+          return Stack(
+            children: [
+              Container(
+                height: isDesktop ? constraints.maxHeight * 0.3 : constraints.maxHeight * 0.4,
+                margin: EdgeInsets.only(bottom: isDesktop ? 60 : 40),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    end: const Alignment(0.0, 0.4),
+                    begin: const Alignment(0.0, -1),
+                    colors: <Color>[Colors.pink, Color(0xFFFF5722)],
+                  ),
                 ),
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.4 - 100,
-                    child: Image.asset('assets/icons/gif/pets.gif')),
-                Container(
-                    height: 75,
-                    width: MediaQuery.of(context).size.width,
-                    child: Container(
-                      width: 250.0,
-                      child: DefaultTextStyle(
-                        style: const TextStyle(
-                          fontSize: 30.0,
-                          fontFamily: 'Popins',
-                        ),
-                        child: Center(
-                          child: AnimatedTextKit(
-                            repeatForever: false,
-                            isRepeatingAnimation: false,
-                            animatedTexts: [
-                              TyperAnimatedText(
-                                AppLocalizations.of(context)!.title,
-                                textStyle: TextStyle(
-                                    color: Colors.deepOrange.shade400,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold),
-                                speed: const Duration(milliseconds: 300),
-                              ),
-                            ],
-                            onTap: () {
-                              print("Tap Event");
-                            },
+              ),
+              CustomPaint(
+                size: Size(
+                  constraints.maxWidth,
+                  isDesktop ? constraints.maxHeight * 0.31 : constraints.maxHeight * 0.4,
+                ),
+                painter: CurvedPainter(),
+              ),
+              Container(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (isDesktop)
+                      SizedBox(
+                        height: constraints.maxHeight * 0.3,
+                      ),
+                    Container(
+                      width: constraints.maxWidth,
+                      height: isDesktop ? constraints.maxHeight * 0.4 - 100 : constraints.maxHeight * 0.3 - 100,
+                      child: Image.asset('assets/icons/gif/pets.gif'),
+                    ),
+                    Container(
+                      height: 75,
+                      width: constraints.maxWidth,
+                      child: Container(
+                        width: isDesktop ? 350.0 : 250.0,
+                        child: DefaultTextStyle(
+                          style: const TextStyle(
+                            fontSize: 30.0,
+                            fontFamily: 'Popins',
+                          ),
+                          child: Center(
+                            child: AnimatedTextKit(
+                              repeatForever: false,
+                              isRepeatingAnimation: false,
+                              animatedTexts: [
+                                TyperAnimatedText(
+                                  AppLocalizations.of(context)!.title,
+                                  textStyle: TextStyle(
+                                      color: Colors.deepOrange.shade400,
+                                      fontSize: isDesktop ? 45 : 35,
+                                      fontWeight: FontWeight.bold),
+                                  speed: const Duration(milliseconds: 300),
+                                ),
+                              ],
+                              onTap: () {
+                                print("Tap Event");
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    )),
-                SizedBox(
-                  height: 80,
+                    ),
+                    SizedBox(
+                      height: isDesktop ? 100 : 80,
+                    ),
+                    const CircularProgressIndicator(
+                        strokeWidth: 5,
+                        backgroundColor: Colors.deepOrange,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white,
+                        )),
+                  ],
                 ),
-                const CircularProgressIndicator(
-                    strokeWidth: 5,
-                    backgroundColor: Colors.deepOrange,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.white,
-                    )),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
