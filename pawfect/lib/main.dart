@@ -1,5 +1,10 @@
 import 'package:DogMatch/Helper/Constants/Constants.dart';
 import 'package:DogMatch/Helper/LangController/langcontroller.dart';
+import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
+import 'package:DogMatch/views/Auth/SignIn/signinDesktop.dart';
+import 'package:DogMatch/views/Auth/SignIn/signinMoble.dart';
+import 'package:DogMatch/views/Auth/SignUp/signup.dart';
+import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsigninDesktop.dart';
 import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
 import 'package:DogMatch/views/SplashScreen/splashScreen.dart';
 import 'package:DogMatch/views/home/AddPostPage/add.dart';
