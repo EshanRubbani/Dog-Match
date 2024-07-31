@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:DogMatch/Helper/Constants/Colors.dart';
-import 'package:DogMatch/views/home/home_page.dart';
+import 'package:DogMatch/views/home/HomePage/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
@@ -33,7 +34,6 @@ class _AddState extends State<Add> {
         });
       }
     } catch (e) {
-      // Handle errors if necessary
       print('Error picking images: $e');
     }
   }
@@ -50,15 +50,17 @@ class _AddState extends State<Add> {
       body: SingleChildScrollView(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            final double width =
-                constraints.maxWidth < 600 ? constraints.maxWidth / 1.2 : constraints.maxWidth / 2;
+            final double width = constraints.maxWidth < 600
+                ? constraints.maxWidth / 1.2
+                : constraints.maxWidth / 2;
             final double height = MediaQuery.of(context).size.height;
 
             return Center(
               child: Container(
                 width: width,
                 height: height,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,32 +94,25 @@ class _AddState extends State<Add> {
   }
 
   void upload() async {
-    final String id = DateTime.now().toString();
+    final String id = nameController.text.toString();
     if (nameController.text.isNotEmpty &&
         ageController.text.isNotEmpty &&
         descriptionController.text.isNotEmpty &&
         interestsController.text.isNotEmpty &&
         _selectedFiles != null &&
         _selectedFiles!.isNotEmpty) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
 
-        //add loading 
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        );
-
-
-      String email = FirebaseAuth.instance.currentUser!.email!;
       try {
-       
-       List<String> urls = await uploadAllFiles(_selectedFiles!.map((file) => File(file.path)).toList(),id);
-
-        
+        List<String> urls = await uploadAllFiles(_selectedFiles!, id);
 
         await FirebaseFirestore.instance.collection("Posts").doc(id).set({
           "name": nameController.text,
@@ -127,16 +122,12 @@ class _AddState extends State<Add> {
           "owner": FirebaseAuth.instance.currentUser!.email,
           "urls": urls
         });
-        
+
         Navigator.of(context).pop();
-  
-        // Show success snackbar
         Get.snackbar("Success", "Posted Successfully");
         Get.to(() => HomePage());
       } catch (e) {
-        // Close progress dialog
         Navigator.of(context).pop();
-
         print('Error uploading post: $e');
         Get.snackbar("Error", "Failed to post: $e");
       }
@@ -145,35 +136,34 @@ class _AddState extends State<Add> {
     }
   }
 
- Future<List<String>> uploadAllFiles(List<File> selectedFiles, String id) async {
-  String email = FirebaseAuth.instance.currentUser!.email!;
-  List<String> uploadedFileUrls = [];
+  Future<List<String>> uploadAllFiles(List<XFile> selectedFiles, String id) async {
+    List<String> uploadedFileUrls = [];
 
-  try {
-    for (File file in selectedFiles) {
-      String fileName = file.path.split('/').last; // Get the file name from the path
-      Reference storageReference = FirebaseStorage.instance.ref('$id/$fileName');
-      UploadTask uploadTask = storageReference.putFile(file);
+    try {
+      for (XFile file in selectedFiles) {
+        Uint8List imageData = await file.readAsBytes();
 
-      // Listen to the upload task
-      await uploadTask.whenComplete(() {});
+        Reference storageReference =
+            FirebaseStorage.instance.ref('$id/${file.name}');
+        UploadTask uploadTask;
 
-      // Get the download URL for the uploaded file
-      String downloadURL = await storageReference.getDownloadURL();
+        if (kIsWeb) {
+          uploadTask = storageReference.putData(imageData);
+        } else {
+          uploadTask = storageReference.putFile(File(file.path));
+        }
 
-      // Store the download URL in the list
-      uploadedFileUrls.add(downloadURL);
-
-      print('File uploaded: $fileName');
+        await uploadTask.whenComplete(() {});
+        String downloadURL = await storageReference.getDownloadURL();
+        uploadedFileUrls.add(downloadURL);
+        print('File uploaded: ${file.name}');
+      }
+      return uploadedFileUrls;
+    } catch (e) {
+      print('Error uploading files: $e');
+      throw Exception('Failed to upload files: $e');
     }
-
-    return uploadedFileUrls; // Return the list of download URLs
-  } catch (e) {
-    print('Error uploading files: $e');
-    throw Exception('Failed to upload files: $e');
   }
-}
-
 
   Container buildMedia(Size size) {
     return Container(
