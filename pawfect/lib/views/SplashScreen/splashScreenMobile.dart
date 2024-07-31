@@ -60,7 +60,7 @@ class _SplashScreenMobileState extends State<SplashScreenMobile> {
                     Container(
                       width: constraints.maxWidth,
                       height: isDesktop ? constraints.maxHeight * 0.4 - 100 : constraints.maxHeight * 0.3 - 100,
-                      child: Image.asset('assets/icons/gif/pets.gif'),
+                      child: Image.asset('assets/logo.png'),
                     ),
                     Container(
                       height: 75,
