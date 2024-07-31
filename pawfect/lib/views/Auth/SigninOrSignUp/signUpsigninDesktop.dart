@@ -48,7 +48,7 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          isEnglish ? 'Greek' : 'English',
+                          isEnglish ? 'Greek' : 'Greek',
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(width: 10),
@@ -60,7 +60,7 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
                         ),
                         SizedBox(width: 10),
                         Text(
-                          isEnglish ? 'English' : 'Greek',
+                          isEnglish ? 'English' : 'English',
                           style: TextStyle(fontSize: 18),
                         ),
                       ],
@@ -72,7 +72,7 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.6 - 30,
                           width: MediaQuery.of(context).size.width / 2,
-                          child: Image.asset('assets/icons/gif/pets.gif'),
+                          child: Image.asset('assets/logo.png'),
                         ),
                         Expanded(
                           child: Column(
@@ -138,7 +138,7 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.width / 70 + 5,
+                          fontSize: MediaQuery.of(context).size.width / 70 ,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Lato',
                           decoration: TextDecoration.none,
