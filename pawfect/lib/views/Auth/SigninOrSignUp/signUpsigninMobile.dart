@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
 import 'package:DogMatch/views/Auth/SignUp/signup.dart';
-import 'package:DogMatch/views/home/home_page.dart';
+import 'package:DogMatch/views/home/HomePage/home_page.dart';
 import '../../../Helper/Painter/curved_painter.dart';
 import '../../home/TabsPage/tabs_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
@@ -54,7 +54,7 @@ const SignUpsigninMobile({ Key? key }) : super(key: key);
                   child: Container(
                     height: 400,
                     width: 150,
-                    child: Image.asset('assets/icons/gif/pets.gif'),
+                    child: Image.asset('assets/logo.png'),
                   ),
                 ),
                 Container(
