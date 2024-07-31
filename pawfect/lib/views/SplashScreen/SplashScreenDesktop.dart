@@ -39,7 +39,7 @@ class _SplashScreenDesktopState extends State<SplashScreenDesktop> {
               width: 450,
              
       
-              child:  Image.asset('assets/icons/gif/pets.gif',filterQuality: FilterQuality.high,),
+              child:  Image.asset('assets/logo.png',filterQuality: FilterQuality.high,),
             ),
             Container(
               height: 75,
