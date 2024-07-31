@@ -1,14 +1,7 @@
-// class KDeviceSize{
-//   KDeviceSize._();
-//
-// }
-import 'package:flutter/foundation.dart';
-
 import 'package:flutter/material.dart';
 
 class ResponsiveNess extends StatelessWidget {
   final Widget mobile;
-
   final Widget desktop;
 
   const ResponsiveNess({
@@ -17,26 +10,18 @@ class ResponsiveNess extends StatelessWidget {
     required this.desktop,
   });
 
-  // // This isMobile, isTablet, isDesktop helep us later
-  // static bool isMobile(BuildContext context) =>
-  //     MediaQuery.of(context).size.width < 850;
+  static bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 768;
 
-  // static bool isDesktop(BuildContext context) =>
-  //     MediaQuery.of(context).size.width >= 1100;
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 768;
 
   @override
   Widget build(BuildContext context) {
-    // final Size size = MediaQuery.of(context).size;
-    // If our width is more than 1100 then we consider it a desktop
-    if (kIsWeb) {
-      // Some web specific code there
+    if (isDesktop(context)) {
       return desktop;
-    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
-        defaultTargetPlatform == TargetPlatform.android) {
-      return mobile;
-      // Some android/ios specific code
     } else {
       return mobile;
     }
   }
-} 
+}
