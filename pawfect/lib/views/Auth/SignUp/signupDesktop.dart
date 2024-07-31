@@ -55,7 +55,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/icons/gif/pets.gif',
+              Image.asset('assets/logo.png',
                   height: MediaQuery.of(context).size.height * 0.6),
               const SizedBox(height: 30),
               Text(
