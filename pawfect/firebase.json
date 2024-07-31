@@ -1,37 +1,38 @@
 {
-  "flutter": {
-    "platforms": {
-      "android": {
-        "default": {
-          "projectId": "dogmatch-d1333",
-          "appId": "1:393969785546:android:a430e781f02348d58b3233",
-          "fileOutput": "android/app/google-services.json"
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "dogmatch-d3595",
+                    "appId": "1:764757429583:android:0af3223be4f94d8206093a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "dogmatch-d3595",
+                    "configurations": {
+                        "android": "1:764757429583:android:0af3223be4f94d8206093a",
+                        "ios": "1:764757429583:ios:4409abb827a5297e06093a",
+                        "web": "1:764757429583:web:a654ce490200624306093a"
+                    }
+                }
+            }
         }
-      },
-      "dart": {
-        "lib/firebase_options.dart": {
-          "projectId": "dogmatch-d1333",
-          "configurations": {
-            "android": "1:393969785546:android:a430e781f02348d58b3233",
-            "ios": "1:393969785546:ios:fc56bb56c9ab9ce38b3233",
-            "web": "1:393969785546:web:6981b46ee5c8ec868b3233"
-          }
-        }
-      }
+    },
+    "hosting": {
+        "site": "dogmatch-d3595-ac048",
+        "public": "build/web",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
     }
-  },
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
 }
