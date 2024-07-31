@@ -35,7 +35,7 @@ class _SigninDesktopState extends State<SigninDesktop> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/icons/gif/pets.gif', height: MediaQuery.of(context).size.height * 0.6),
+              Image.asset('assets/logo.png', height: MediaQuery.of(context).size.height * 0.6),
               SizedBox(height: 30),
               Text(
                 AppLocalizations.of(context)!.title,
