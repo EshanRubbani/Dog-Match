@@ -1,17 +1,16 @@
 import 'package:DogMatch/views/home/ProfileScreen/profile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../home_page.dart';
+import '../HomePage/home_page.dart';
 
 class TabsPage extends StatefulWidget {
-
   @override
   _TabsPageState createState() => _TabsPageState();
 }
 
-class _TabsPageState extends State<TabsPage>
-    with SingleTickerProviderStateMixin {
+class _TabsPageState extends State<TabsPage> with SingleTickerProviderStateMixin {
   List<Widget> _tabs = [
     HomePage(),
     Center(child: Icon(Icons.chat_bubble_outline)),
@@ -20,6 +19,7 @@ class _TabsPageState extends State<TabsPage>
 
   late TabController _controller;
   int _newIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,6 @@ class _TabsPageState extends State<TabsPage>
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       body: Stack(
         children: [
@@ -40,10 +39,11 @@ class _TabsPageState extends State<TabsPage>
             controller: _controller,
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.centerRight,
             child: Container(
-              height: 56,
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+              width: 70, // Adjust the width as needed
+              height: 200, // Adjust the height as needed
+              margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(100),
@@ -56,93 +56,66 @@ class _TabsPageState extends State<TabsPage>
                   ),
                 ],
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: TabBar(
-                  indicatorColor: Colors.transparent,
-                  tabs: [
-                    _newIndex == 0
-                        ? Container(
-                            height: 46,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Discover',
-                                style: TextStyle(
-                                  color: Colors.deepOrange,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Tab(
-                            icon: Icon(
-                              Icons.location_searching_sharp,
-                              color: Colors.grey,
-                            ),
-                          ),
-                    _newIndex == 1
-                        ? Container(
-                            height: 46,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Chat',
-                                style: TextStyle(
-                                  color: Colors.deepOrange,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Tab(
-                            icon: Icon(
-                              Icons.chat_bubble_outline,
-                              color: Colors.grey,
-                            ),
-                          ),
-                    _newIndex == 2
-                        ? Container(
-                            height: 46,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'User',
-                                style: TextStyle(
-                                  color: Colors.deepOrange,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Tab(
-                            icon: SvgPicture.asset(
-                              "assets/icons/svg/user.svg",
-                              height: 20,
-                              color: Colors.grey,
-                            ),
-                          ),
-                  ],
-                  onTap: (index) {
-                    setState(() {
-                      _newIndex = index;
-                    });
-                  },
-                  controller: _controller,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildTabItem(
+                    index: 0,
+                    icon: CupertinoIcons.home,
+                    label: 'Discover',
+                    isSelected: _newIndex == 0,
+                  ),
+                  _buildTabItem(
+                    index: 1,
+                    icon: Icons.chat_bubble_outline,
+                    label: 'Chat',
+                    isSelected: _newIndex == 1,
+                  ),
+                  _buildTabItem(
+                    index: 2,
+                    icon: SvgPicture.asset(
+                      "assets/icons/svg/user.svg",
+                      height: 20,
+                      color: Colors.grey,
+                    ),
+                    label: 'User',
+                    isSelected: _newIndex == 2,
+                  ),
+                ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTabItem({
+    required int index,
+    required dynamic icon,
+    required String label,
+    required bool isSelected,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _newIndex = index;
+          _controller.animateTo(index);
+        });
+      },
+      child: Container(
+        height: 50,
+        width: 50,
+        margin: EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.deepOrange.withOpacity(0.2) : Colors.transparent,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Center(
+          child: icon is IconData
+              ? Icon(icon, color: isSelected ? Colors.deepOrange : Colors.grey)
+              : icon,
+        ),
       ),
     );
   }
