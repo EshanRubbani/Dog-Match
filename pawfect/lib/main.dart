@@ -1,13 +1,5 @@
-import 'package:DogMatch/Helper/Constants/Constants.dart';
 import 'package:DogMatch/Helper/LangController/langcontroller.dart';
-import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
-import 'package:DogMatch/views/Auth/SignIn/signinDesktop.dart';
-import 'package:DogMatch/views/Auth/SignIn/signinMoble.dart';
-import 'package:DogMatch/views/Auth/SignUp/signup.dart';
-import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsigninDesktop.dart';
-import 'package:DogMatch/views/Auth/Wrapper/authwrapper.dart';
 import 'package:DogMatch/views/SplashScreen/splashScreen.dart';
-import 'package:DogMatch/views/home/AddPostPage/add.dart';
 import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +26,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      title: 'DogMatch',
+      title: 'Dog Match 1',
       theme: ThemeData(
         fontFamily: 'Popins',
         useMaterial3: true,
