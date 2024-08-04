@@ -1,10 +1,14 @@
 import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:DogMatch/Helper/LangController/langcontroller.dart';
 import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
 import 'package:DogMatch/views/Auth/SignUp/signup.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class SignUpsigninDesktop extends StatefulWidget {
   const SignUpsigninDesktop({Key? key}) : super(key: key);
@@ -14,6 +18,10 @@ class SignUpsigninDesktop extends StatefulWidget {
 }
 
 class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
+final GoogleSignIn _googleSignIn = GoogleSignIn(
+  clientId: '764757429583-svc22msrlrvql6akftlfc3r4j1vtkdml.apps.googleusercontent.com',
+);
+
   bool isEnglish = Get.locale?.languageCode == 'en';
 
   void _onLanguageChanged(bool value) {
@@ -227,9 +235,9 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
                           backgroundColor: const Color.fromARGB(255, 255, 87, 34).withOpacity(0.6),
                           elevation: 15.0,
                         ),
-                        onPressed: () {
-                          // Add Google sign-in functionality here
-                        },
+                     onPressed: () async {
+                      _signInWithGoogle();
+                     },
                         child: const Text(
                           "Google", // Replace with localized string if available
                           style: TextStyle(
@@ -250,4 +258,44 @@ class _SignUpsigninDesktopState extends State<SignUpsigninDesktop> {
       ),
     );
   }
+
+
+
+void _signInWithGoogle() async {
+  try {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    if (googleUser != null) {
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('Profiles')
+            .doc(userCredential.user!.uid)
+            .set({
+          'firstName': googleUser.displayName,
+          'lastName': googleUser.displayName,
+          "email": googleUser.email,
+          'dp': FirebaseAuth.instance.currentUser!.photoURL,
+        });
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TabsPage()),
+        );
+      } else {
+        // Handle error
+      }
+    }
+  } catch (error) {
+    print("Error signing in with Google: $error");
+  }
+}
 }
