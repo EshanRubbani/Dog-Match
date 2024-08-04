@@ -151,19 +151,17 @@ class _HomePageMobileState extends State<HomePageMobile> {
                               aspectRatio: 0.7,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetailsPage(
-                                        Name: images[index]['name'],
-                                        age: images[index]['age'],
-                                        descripton: images[index]['description'],
-                                        urls: images[index]['urls'],
-                                        interests: images[index]['interests'],
-                                        image: images[index]['imageUrl'],
-                                      ),
-                                    ),
+                                  Get.to(DetailsPage(
+                                    Name: images[index]['name'],
+                                    age: images[index]['age'],
+                                    descripton: images[index]['description'],
+                                    urls: images[index]['urls'],
+                                    interests: images[index]['interests'],
+                                    image: images[index]['imageUrl'],
+                                  ),
                                   );
+
+
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(24),
