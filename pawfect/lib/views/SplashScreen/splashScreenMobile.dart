@@ -52,11 +52,9 @@ class _SplashScreenMobileState extends State<SplashScreenMobile> {
                 height: constraints.maxHeight,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (isDesktop)
-                      SizedBox(
-                        height: constraints.maxHeight * 0.3,
-                      ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.13,),
                     Container(
                       width: constraints.maxWidth,
                       height: isDesktop ? constraints.maxHeight * 0.4 - 100 : constraints.maxHeight * 0.3 - 100,
