@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       locale: Get.deviceLocale,
       debugShowCheckedModeBanner: false,
-      title: 'Dog Match 1',
+      title: 'Dog Match Google 1',
       theme: ThemeData(
         fontFamily: 'Popins',
         useMaterial3: true,
