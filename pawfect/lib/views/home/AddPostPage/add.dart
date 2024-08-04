@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:DogMatch/Helper/Constants/Colors.dart';
 import 'package:DogMatch/views/home/HomePage/home_page.dart';
+import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -125,7 +126,7 @@ class _AddState extends State<Add> {
 
         Navigator.of(context).pop();
         Get.snackbar("Success", "Posted Successfully");
-        Get.to(() => HomePage());
+        Get.to(() => TabsPage());
       } catch (e) {
         Navigator.of(context).pop();
         print('Error uploading post: $e');
@@ -136,34 +137,38 @@ class _AddState extends State<Add> {
     }
   }
 
-  Future<List<String>> uploadAllFiles(List<XFile> selectedFiles, String id) async {
-    List<String> uploadedFileUrls = [];
+ Future<List<String>> uploadAllFiles(List<XFile> selectedFiles, String id) async {
+  List<String> uploadedFileUrls = [];
 
-    try {
-      for (XFile file in selectedFiles) {
-        Uint8List imageData = await file.readAsBytes();
+  try {
+    for (XFile file in selectedFiles) {
+      Uint8List imageData = await file.readAsBytes();
 
-        Reference storageReference =
-            FirebaseStorage.instance.ref('$id/${file.name}');
-        UploadTask uploadTask;
+      Reference storageReference =
+          FirebaseStorage.instance.ref('Posts/$id/${file.name}');
+      UploadTask uploadTask;
 
-        if (kIsWeb) {
-          uploadTask = storageReference.putData(imageData);
-        } else {
-          uploadTask = storageReference.putFile(File(file.path));
-        }
+      final metadata = SettableMetadata(
+        contentType: 'image/jpeg', // Adjust the content type as needed
+      );
 
-        await uploadTask.whenComplete(() {});
-        String downloadURL = await storageReference.getDownloadURL();
-        uploadedFileUrls.add(downloadURL);
-        print('File uploaded: ${file.name}');
+      if (kIsWeb) {
+        uploadTask = storageReference.putData(imageData, metadata);
+      } else {
+        uploadTask = storageReference.putFile(File(file.path), metadata);
       }
-      return uploadedFileUrls;
-    } catch (e) {
-      print('Error uploading files: $e');
-      throw Exception('Failed to upload files: $e');
+
+      await uploadTask.whenComplete(() {});
+      String downloadURL = await storageReference.getDownloadURL();
+      uploadedFileUrls.add(downloadURL);
+      print('File uploaded: ${file.name}');
     }
+    return uploadedFileUrls;
+  } catch (e) {
+    print('Error uploading files: $e');
+    throw Exception('Failed to upload files: $e');
   }
+}
 
   Container buildMedia(Size size) {
     return Container(
