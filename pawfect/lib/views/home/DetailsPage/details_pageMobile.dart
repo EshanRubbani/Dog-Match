@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show Align, Alignment, AspectRatio, Axis, BorderRadius, BoxDecoration, BoxFit, BoxShadow, BuildContext, ClipRRect, Color, Colors, Column, Container, CrossAxisAlignment, CustomScrollView, Divider, EdgeInsets, FlexibleSpaceBar, FontWeight, GestureDetector, Icon, IconButton, IconThemeData, Icons, Image, Key, LinearGradient, ListView, MainAxisAlignment, MaterialPageRoute, MediaQuery, Navigator, Offset, Padding, Positioned, Radius, Row, Scaffold, SizedBox, SliverAppBar, SliverToBoxAdapter, Stack, State, StatefulWidget, Text, TextStyle, Widget;
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import '../MatchPage/match_page.dart';
 
@@ -22,7 +22,9 @@ class DetailsPageMobile extends StatefulWidget {
 }
 
 class _DetailsPageMobileState extends State<DetailsPageMobile> {
-  
+  int _selectedImageIndex = 0;
+
+
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context);
@@ -40,7 +42,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                 pinned: true,
                 snap: true,
                 collapsedHeight: 116,
-                actionsIconTheme: IconThemeData(opacity: 0.0),
+                actionsIconTheme: const IconThemeData(opacity: 0.0),
                 toolbarHeight: 56,
                 titleSpacing: 0,
                 centerTitle: false,
@@ -49,7 +51,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                   child: Container(
                     height: 40,
                     width: 40,
-                    margin: EdgeInsets.only(left: 16),
+                    margin: const EdgeInsets.only(left: 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
@@ -58,7 +60,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 0,
                           blurRadius: 4,
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
@@ -66,7 +68,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_rounded,
                         color: Colors.black,
                       ),
@@ -74,11 +76,11 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                   ),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: EdgeInsets.all(0),
+                  titlePadding: const EdgeInsets.all(0),
                   title: Container(
                     height: 67,
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
+                    padding: const EdgeInsets.all(16),
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(28),
@@ -93,98 +95,36 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           children: [
                             Row(
                               children: [
-                                SizedBox(width: 2),
+                                const SizedBox(width: 2),
                                 Text(
-                                  localization!.detailsPageTitle,
+                                  widget.Name,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Text(
+                                  " , ",
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(width: 6),
-                                Container(
-                                  height: 12,
-                                  width: 12,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue[300],
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Icon(
-                                          Icons.check,
-                                          size: 10,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.location_on_outlined,
-                                  color: Colors.pink,
-                                  size: 14,
-                                ),
                                 Text(
-                                  localization.locationLabel,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey[400],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: 34,
-                          width: 34,
-                          child: Stack(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.green[300],
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
-                              Container(
-                                height: 18,
-                                width: 18,
-                                color: Colors.white,
-                              ),
-                              Center(
-                                child: Container(
-                                  height: 28,
-                                  width: 28,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  '9.2',
-                                  style: TextStyle(
+                                  widget.age,
+                                  style: const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 10,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+
+                              ],
+                            ),
+
+                          ],
                         ),
                       ],
                     ),
@@ -195,9 +135,9 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                       children: <Widget>[
                         Positioned.fill(
                           child: Container(
-                            padding: EdgeInsets.only(bottom: 86),
+                            padding: const EdgeInsets.only(bottom: 86),
                             child: Image.network(
-                              "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
+                              widget.urls[_selectedImageIndex],
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -206,13 +146,13 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           alignment: Alignment.bottomCenter,
                           child: Container(
                             height: 150,
-                            margin: EdgeInsets.only(bottom: 60),
+                            margin: const EdgeInsets.only(bottom: 60),
                             width: double.infinity,
-                            decoration: new BoxDecoration(
-                              gradient: new LinearGradient(
-                                end: const Alignment(0.0, 0.4),
-                                begin: const Alignment(0.0, -1),
-                                colors: <Color>[
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                end: Alignment(0.0, 0.4),
+                                begin: Alignment(0.0, -1),
+                                colors: [
                                   Colors.transparent,
                                   Colors.black,
                                 ],
@@ -224,54 +164,37 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           alignment: Alignment.bottomCenter,
                           child: Container(
                             height: 120,
-                            padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                            margin: EdgeInsets.only(bottom: 100),
+                            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                            margin: const EdgeInsets.only(bottom: 100),
                             width: double.infinity,
-                            child: ListView(
+                            child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              children: [
-                                SizedBox(width: 8),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1.4,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.network(
-                                        "https://plus.unsplash.com/premium_photo-1667030783942-05351fd6c3fc?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                                        fit: BoxFit.cover,
+                              itemCount: widget.urls.length + 2, // Include extra items for the padding at start and end
+                              itemBuilder: (context, index) {
+                                if (index == 0 || index == widget.urls.length + 1) {
+                                  return const SizedBox(width: 8);
+                                }
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedImageIndex = index - 1;
+                                    });
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AspectRatio(
+                                      aspectRatio: 1.4,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(16),
+                                        child: Image.network(
+                                          widget.urls[index - 1],
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1.4,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.network(
-                                        "https://plus.unsplash.com/premium_photo-1667673941713-ad4d4751c93b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AspectRatio(
-                                    aspectRatio: 1.4,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(16),
-                                      child: Image.network(
-                                        "https://plus.unsplash.com/premium_photo-1666878155781-f86514e5808b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                              ],
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -283,13 +206,13 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    Divider(
+                    const Divider(
                       height: 1,
                       thickness: 1,
                       indent: 32,
                       endIndent: 32,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: Row(
@@ -297,29 +220,23 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                         children: [
                           Text(
                             localization!.interestsLabel,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-                          Text(
-                            localization.similarLabel,
-                            style: TextStyle(
-                              color: Colors.deepOrange,
-                              fontSize: 16,
-                            ),
-                          ),
+
                         ],
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                       child: Row(
                         children: [
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.deepOrange.withOpacity(0.2),
@@ -327,15 +244,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.shopping_cart_rounded,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.shoppingInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -343,7 +260,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.deepOrange.withOpacity(0.2),
@@ -351,15 +268,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.library_music,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.musicInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -367,7 +284,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.deepOrange.withOpacity(0.2),
@@ -375,15 +292,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.local_drink_sharp,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.coffeeInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -398,7 +315,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                       child: Row(
                         children: [
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.2),
@@ -406,15 +323,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.menu_book_rounded,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.booksInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -422,7 +339,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.2),
@@ -430,15 +347,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.airplanemode_active,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.travelInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -446,7 +363,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.all(8),
+                            margin: const EdgeInsets.all(8),
                             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                             decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.2),
@@ -454,15 +371,15 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.sports_basketball,
                                   color: Colors.deepOrange,
                                   size: 16,
                                 ),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
                                   localization.basketballInterest,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.deepOrange,
                                   ),
                                 ),
@@ -488,7 +405,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           // fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 800),
+                      const SizedBox(height: 800),
                     ],
                   ),
                 ),
@@ -505,7 +422,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                   Container(
                     height: 64,
                     width: 64,
-                    margin: EdgeInsets.fromLTRB(16, 16, 10, 16),
+                    margin: const EdgeInsets.fromLTRB(16, 16, 10, 16),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
@@ -514,13 +431,13 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 0,
                           blurRadius: 4,
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
                     child: IconButton(
                       onPressed: () {},
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.close_rounded,
                         color: Colors.deepOrange,
                         size: 28,
@@ -530,7 +447,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                   Container(
                     height: 64,
                     width: 64,
-                    margin: EdgeInsets.fromLTRB(10, 16, 16, 16),
+                    margin: const EdgeInsets.fromLTRB(10, 16, 16, 16),
                     decoration: BoxDecoration(
                       gradient: new LinearGradient(
                         end: const Alignment(0.0, 0.4),
@@ -546,7 +463,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 0,
                           blurRadius: 4,
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
@@ -559,7 +476,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           ),
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.favorite_rounded,
                         color: Colors.white,
                         size: 28,
