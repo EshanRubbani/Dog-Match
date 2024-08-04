@@ -25,16 +25,11 @@ class DetailsPageDesktop extends StatefulWidget {
 }
 
 class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-     int _currentIndex = 0;
     var localization = AppLocalizations.of(context);
-     final List<dynamic> urls1 = [
-      "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
-        "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
-          "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
-            "https://w0.peakpx.com/wallpaper/623/426/HD-wallpaper-cute-dog-for-blurry-background-pet-dog-pet-animal.jpg",
-     ];
     return Scaffold(
       backgroundColor: Colors.white,
       body: Row(
@@ -52,65 +47,41 @@ class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
                     color: Colors.red,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Stack(
-                    children: [
-                      CarouselSlider(
-                        options: CarouselOptions(
-                          autoPlay: true,
-                          aspectRatio: 2.0,
-                          enlargeCenterPage: true,
-                          pauseAutoPlayOnTouch: true,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentIndex = index;
-                            });
-                          },
-                        ),
-                        items: urls1.map((url) {
-                          return Container(
-                            child: Center(
-                              child: Image.network(
-                                url,
-                                loadingBuilder: (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return const CircularProgressIndicator(
-                                    color: Colors.red,
-                                  );
-                                },
-                                fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                height: MediaQuery.of(context).size.height * 0.75,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      Positioned(
-                        bottom: 10.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: widget.urls.map((url) {
-                            int index = widget.urls.indexOf(url);
-                            return Container(
-                              width: 8.0,
-                              height: 8.0,
-                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _currentIndex == index
-                                    ? Color.fromRGBO(0, 0, 0, 0.9)
-                                    : Color.fromRGBO(0, 0, 0, 0.4),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                      pauseAutoPlayOnTouch: true,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentIndex = index;
+                        });
+                      },
+                    ),
+                    items: widget.urls.map((url) {
+                      return Container(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                                    height: MediaQuery.of(context).size.height * 0.75,
+                        child: Image.network(
+                          url,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.red,
                               ),
                             );
-                          }).toList(),
+                          },
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: MediaQuery.of(context).size.height * 0.75 -50,
                         ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                 ),
-                SizedBox(height: 30),
+                
               ],
             ),
           ),
@@ -161,7 +132,7 @@ class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      "localization?.interests ?? ",
+                      widget.interests,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
