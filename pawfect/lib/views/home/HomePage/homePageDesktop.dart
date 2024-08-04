@@ -1,3 +1,4 @@
+import 'package:DogMatch/Helper/Constants/Colors.dart';
 import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:DogMatch/views/home/DetailsPage/details_page.dart';
 import 'package:DogMatch/views/home/MatchPage/match_page.dart';
@@ -17,11 +18,6 @@ class HomePageDesktop extends StatefulWidget {
 class _HomePageDesktopState extends State<HomePageDesktop> {
   final CardSwiperController controller = CardSwiperController();
   List<Widget> cards = [];
-  String name = "";
-  String age = "";
-  String description = "";
-  String interests = "";
-   List<dynamic> urls1 =[];
 
   @override
   void initState() {
@@ -38,15 +34,14 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
     for (var doc in documents) {
       var data = doc.data() as Map<String, dynamic>;
       List<dynamic> urls = data['urls'];
-      name = data['name'];
-      age = data['age'];
-      description = data['description'];
-      interests = data['interests'];
-
+      String name = data['name'];
+      String age = data['age'];
+      String description = data['description'];
+      String interests = data['interests'];
 
       if (urls.isNotEmpty) {
         fetchedCards.add(ExampleCard(
-          imageUrl: encodeUrl(urls[0] as String),
+          imageUrl: urls[0] as String,
           name: name,
           age: age,
           description: description,
@@ -110,7 +105,8 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                       color: Colors.black.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child: Icon(Icons.notifications_none_outlined, color: Colors.white),
+                    child: Icon(Icons.notifications_none_outlined,
+                        color: Colors.white),
                   ),
                   SizedBox(width: 10),
                   Container(
@@ -144,7 +140,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                           cardsCount: cards.length,
                           onSwipe: _onSwipe,
                           onUndo: _onUndo,
-                          numberOfCardsDisplayed: 1,
+                          numberOfCardsDisplayed: cards.length,
                           backCardOffset: const Offset(40, 40),
                           padding: const EdgeInsets.all(24.0),
                           cardBuilder: (
@@ -173,26 +169,17 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                     child: const Icon(Icons.keyboard_arrow_left),
                   ),
                   FloatingActionButton(
-                    onPressed: () => controller.swipe(CardSwiperDirection.right),
+                    onPressed: () =>
+                        controller.swipe(CardSwiperDirection.right),
                     child: const Icon(Icons.keyboard_arrow_right),
                   ),
                   FloatingActionButton(
-                    onPressed: () {
-                      controller.swipe(CardSwiperDirection.top);
-                      // Ensure the correct data is passed here
-                      Get.to(DetailsPage(
-                        Name: name,
-                        age: age,
-                        descripton: description,
-                        urls: urls1,
-                        interests: interests,
-                        image: '',
-                      ));
-                    },
+                    onPressed: () => controller.swipe(CardSwiperDirection.top),
                     child: const Icon(Icons.keyboard_arrow_up),
                   ),
                   FloatingActionButton(
-                    onPressed: () => controller.swipe(CardSwiperDirection.bottom),
+                    onPressed: () =>
+                        controller.swipe(CardSwiperDirection.bottom),
                     child: const Icon(Icons.keyboard_arrow_down),
                   ),
                 ],
@@ -258,18 +245,96 @@ class ExampleCard extends StatelessWidget {
         ));
       },
       child: Card(
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return Center(child: Text('Failed to load image'));
-          },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Container(
+                width: 430,
+                height: 300,
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.high,
+                  errorBuilder: (context, error, stackTrace) {
+                    print('Failed to load image: $imageUrl');
+                    return Center(child: Text('Failed to load image'));
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                            : null,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                SizedBox(width: 10),
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                    color:KAppColors.darkPrimaryColor,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+                Text(" , ",style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                    color:KAppColors.darkPrimaryColor,
+                  ),),
+                Text(
+                  age,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Poppins",
+                     color:KAppColors.darkPrimaryColor,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+             Row(
+               children: [
+                 SizedBox(width: 10),
+                 Text(
+                      description ,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        fontFamily: "Poppins",
+                        color:KAppColors.lightPrimaryColor,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+               ],
+             ),
+          ],
         ),
       ),
     );
   }
-}
-
-String encodeUrl(String url) {
-  return Uri.encodeFull(url);
 }
