@@ -11,43 +11,53 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: user != null
           ? Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      user.email.toString(),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                     Get.to( Add());
-                      },
-                      child: Text('Add Post'),
-                    ),
-                    SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Implement sign out functionality
-                        FirebaseAuth.instance.signOut();
-                        Get.offAll(SignInSignUp());
-                      },
-                      child: Text('Sign Out'),
-                    ),
-                  ],
-                ),
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundImage:
+                    NetworkImage(user.photoURL!),
+                                   radius: 100,
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+              const SizedBox(height: 30),
+              Text(
+                user.displayName ?? 'No Name',
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                user.email ?? 'No Email',
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  Get.to(const Add());
+                },
+                child: const Text('Add Post'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Get.offAll(SignInSignUp());
+                },
+                child: const Text('Sign Out'),
+              ),
+            ],
+          ),
+        ),
+      )
+          : const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
