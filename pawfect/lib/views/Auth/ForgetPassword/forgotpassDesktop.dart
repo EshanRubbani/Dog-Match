@@ -2,7 +2,7 @@ import 'package:DogMatch/Helper/Constants/Colors.dart';
 import 'package:DogMatch/Helper/LangController/langcontroller.dart';
 import 'package:DogMatch/Helper/Painter/curved_painter.dart';
 import 'package:DogMatch/views/Auth/SignIn/signIn.dart';
-import 'package:DogMatch/views/Auth/SignUp/signupDesktop%20copy.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
