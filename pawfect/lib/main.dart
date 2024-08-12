@@ -1,5 +1,7 @@
 import 'package:DogMatch/Helper/LangController/langcontroller.dart';
 import 'package:DogMatch/views/SplashScreen/splashScreen.dart';
+import 'package:DogMatch/views/home/AddPostPage/add.dart';
+import 'package:DogMatch/views/home/MatchPage/Match_Page_Desktop.dart';
 import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
       ),
       home: _buildHomePage(),
+      // home: Add(),
     );
   }
 
