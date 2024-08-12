@@ -14,7 +14,7 @@ class _TabsPageDesktopState extends State<TabsPageDesktop> with SingleTickerProv
   List<Widget> _tabs = [
     HomePage(),
     Center(child: Icon(Icons.chat_bubble_outline)),
-    ProfileScreen(),
+    Profile(),
   ];
 
   late TabController _controller;
