@@ -1,9 +1,9 @@
 import 'package:DogMatch/Helper/Constants/Colors.dart';
 import 'package:DogMatch/views/Auth/SigninOrSignUp/signUpsignIn.dart';
 import 'package:DogMatch/views/home/DetailsPage/details_page.dart';
-import 'package:DogMatch/views/home/MatchPage/match_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -18,6 +18,7 @@ class HomePageDesktop extends StatefulWidget {
 class _HomePageDesktopState extends State<HomePageDesktop> {
   final CardSwiperController controller = CardSwiperController();
   List<Widget> cards = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -38,6 +39,8 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
       String age = data['age'];
       String description = data['description'];
       String interests = data['interests'];
+      String owner = data['ownerID'];
+
 
       if (urls.isNotEmpty) {
         fetchedCards.add(ExampleCard(
@@ -46,13 +49,14 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
           age: age,
           description: description,
           interests: interests,
-          urls: urls,
+          urls: urls, ownerID: owner,
         ));
       }
     }
 
     setState(() {
       cards = fetchedCards;
+      isLoading = false;
     });
   }
 
@@ -81,61 +85,15 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  SizedBox(width: 50),
-                  Text(
-                    "Welcome ${FirebaseAuth.instance.currentUser!.email.toString()}! ",
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.019,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 42,
-                    width: 42,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: Icon(Icons.notifications_none_outlined,
-                        color: Colors.white),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    height: 42,
-                    width: 42,
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {
-                        FirebaseAuth.instance.signOut();
-                        Get.offAll(SignInSignUp());
-                      },
-                      child: Icon(Icons.login_outlined, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 50),
-                ],
-              ),
-            ),
+            buildHeader(),
             Expanded(
               child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.34,
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: cards.isNotEmpty
-                      ? CardSwiper(
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : Container(
+                        width: MediaQuery.of(context).size.width * 0.34,
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: CardSwiper(
                           controller: controller,
                           cardsCount: cards.length,
                           onSwipe: _onSwipe,
@@ -150,44 +108,58 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
                             verticalThresholdPercentage,
                           ) =>
                               cards[index],
-                        )
-                      : Center(child: CircularProgressIndicator()),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FloatingActionButton(
-                    onPressed: controller.undo,
-                    child: const Icon(Icons.rotate_left),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () => controller.swipe(CardSwiperDirection.left),
-                    child: const Icon(Icons.keyboard_arrow_left),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () =>
-                        controller.swipe(CardSwiperDirection.right),
-                    child: const Icon(Icons.keyboard_arrow_right),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () => controller.swipe(CardSwiperDirection.top),
-                    child: const Icon(Icons.keyboard_arrow_up),
-                  ),
-                  FloatingActionButton(
-                    onPressed: () =>
-                        controller.swipe(CardSwiperDirection.bottom),
-                    child: const Icon(Icons.keyboard_arrow_down),
-                  ),
-                ],
+                        ),
+                      ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Container buildHeader() {
+    return Container(
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        children: [
+          const SizedBox(width: 50),
+          Text(
+            "Welcome ${FirebaseAuth.instance.currentUser!.email.toString()}! ",
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width * 0.019,
+              fontWeight: FontWeight.bold,
+              fontFamily: "lato",
+              color: Colors.white,
+            ),
+          ),
+          const Spacer(),
+          buildIcon(Icons.notifications_none_outlined),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
+              FirebaseAuth.instance.signOut();
+              Get.offAll(SignInSignUp());
+            },
+            child: buildIcon(Icons.login_outlined),
+          ),
+          const SizedBox(width: 50),
+        ],
+      ),
+    );
+  }
+
+  Container buildIcon(IconData icon) {
+    return Container(
+      height: 42,
+      width: 42,
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Icon(icon, color: Colors.white),
     );
   }
 
@@ -221,6 +193,9 @@ class ExampleCard extends StatelessWidget {
   final String description;
   final String interests;
   final List<dynamic> urls;
+  final String ownerID;
+
+
 
   ExampleCard({
     required this.imageUrl,
@@ -228,7 +203,7 @@ class ExampleCard extends StatelessWidget {
     required this.age,
     required this.description,
     required this.interests,
-    required this.urls,
+    required this.urls, required this.ownerID,
   });
 
   @override
@@ -241,7 +216,7 @@ class ExampleCard extends StatelessWidget {
           descripton: description,
           urls: urls,
           interests: interests,
-          image: imageUrl,
+          image: imageUrl, ownerID: ownerID,
         ));
       },
       child: Card(
@@ -249,92 +224,121 @@ class ExampleCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Container(
-                width: 430,
-                height: 300,
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.high,
-                  errorBuilder: (context, error, stackTrace) {
-                    print('Failed to load image: $imageUrl');
-                    return Center(child: Text('Failed to load image'));
-                  },
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                (loadingProgress.expectedTotalBytes ?? 1)
-                            : null,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Text(
-                  name,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Poppins",
-                    color:KAppColors.darkPrimaryColor,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                Text(" , ",style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Poppins",
-                    color:KAppColors.darkPrimaryColor,
-                  ),),
-                Text(
-                  age,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Poppins",
-                     color:KAppColors.darkPrimaryColor,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-              ],
-            ),
-             Row(
-               children: [
-                 SizedBox(width: 10),
-                 Text(
-                      description ,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        fontFamily: "Poppins",
-                        color:KAppColors.lightPrimaryColor,
-                      ),
-                      textAlign: TextAlign.start,
-                    ),
-               ],
-             ),
+            buildCardImage(),
+            buildCardDetails(),
           ],
         ),
       ),
+    );
+  }
+
+  Container buildCardImage() {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      width: 430,
+      height: 300,
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10), // Curving the edges
+          child: Container(
+            width: 390,
+            height: 260,
+            child: Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
+              errorBuilder: (context, error, stackTrace) {
+                print('Failed to load image: $imageUrl');
+                return const Center(child: Text('Failed to load image'));
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            (loadingProgress.expectedTotalBytes ?? 1)
+                        : null,
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Column buildCardDetails() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            const SizedBox(width: 25),
+            const Icon(Icons.pets_outlined, color: Colors.grey, size: 25),
+            const SizedBox(width: 5),
+            Text(
+              name,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Lato",
+                color: KAppColors.darkPrimaryColor,
+              ),
+              textAlign: TextAlign.start,
+            ),
+            const Text(
+              " , ",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: "lato",
+                color: KAppColors.darkPrimaryColor,
+              ),
+            ),
+            Text(
+              age,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                fontFamily: "lato",
+                color: KAppColors.darkPrimaryColor,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            const SizedBox(width: 25),
+            Container(
+              width: 365,
+              height: 49,
+              child: Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  fontFamily: "Poppins",
+                  color: KAppColors.lightPrimaryColor,
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
