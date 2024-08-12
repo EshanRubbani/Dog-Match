@@ -352,7 +352,7 @@ class _SignupDesktopState extends State<SignupDesktop> {
         });
         Navigator.of(context).pop();
         Get.snackbar("Success", "Account has been successfully created");
-        Get.offAll(() => const DpUpload());
+        Get.offAll(() => DpUpload(fname: firstNameController.text, lname: lastNameController.text,));
       } else {
         Navigator.of(context).pop();
         Get.snackbar("Error", "Account creation failed");
