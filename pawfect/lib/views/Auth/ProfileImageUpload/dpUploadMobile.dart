@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DpUploadMobile extends StatefulWidget {
-  const DpUploadMobile({Key? key}) : super(key: key);
+    final String fname;
+  final String lname;
+  const DpUploadMobile({Key? key, required this.fname, required this.lname}) : super(key: key);
 
   @override
   _DpUploadMobileState createState() => _DpUploadMobileState();
@@ -27,38 +29,49 @@ class _DpUploadMobileState extends State<DpUploadMobile> {
       pickedFile = result.files.first;
     });
   }
+Future uploadFile() async {
+  showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.orangeAccent.shade400,
+            ),
+          ));
+  if (pickedFile == null) return;
 
-  Future uploadFile() async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.orangeAccent.shade400,
-               
-              ),
-            ));
-    if (pickedFile == null) return;
+  final path = 'Users/${FirebaseAuth.instance.currentUser!.uid}.jpg';
+  final file = File(pickedFile!.path!);
+  final ref = FirebaseStorage.instance.ref().child(path);
+  uploadTask = ref.putFile(file);
 
-    final path = 'Users/${FirebaseAuth.instance.currentUser!.uid}.jpg';
-    final file = File(pickedFile!.path!);
-    final ref = FirebaseStorage.instance.ref().child(path);
-    uploadTask = ref.putFile(file);
+  final snapshot = await uploadTask!.whenComplete(() {});
+  final urlDownload = await snapshot.ref.getDownloadURL();
 
-    final snapshot = await uploadTask!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    print(urlDownload);
+  final userDocRef = FirebaseFirestore.instance
+      .collection('Profiles')
+      .doc(FirebaseAuth.instance.currentUser!.uid);
 
-    await FirebaseFirestore.instance
-        .collection('Profiles')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({
+  // Get the existing document data
+  final userDoc = await userDocRef.get();
+  if (userDoc.exists) {
+    final userData = userDoc.data() as Map<String, dynamic>;
+    
+    // Update only the dp field, keeping existing data
+    await userDocRef.update({
       'dp': urlDownload,
+      // Optionally, include other fields you want to preserve
+      'firstName': widget.fname,
+      'lastName': widget.lname,
+      'email': FirebaseAuth.instance.currentUser!.email,
+      // etc.
     });
-    Navigator.pop(context);
-    Get.snackbar("Success", "Profile Image Uploaded Successfully");
-    Get.to(() => const VerifyEmail());
   }
+
+  Navigator.pop(context);
+  Get.snackbar("Success", "Profile Image Uploaded Successfully");
+  Get.to(() => const VerifyEmail());
+}
 
   @override
   Widget build(BuildContext context) {
