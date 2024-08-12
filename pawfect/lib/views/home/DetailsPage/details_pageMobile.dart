@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart' show Align, Alignment, AspectRatio, Axis, BorderRadius, BoxDecoration, BoxFit, BoxShadow, BuildContext, ClipRRect, Color, Colors, Column, Container, CrossAxisAlignment, CustomScrollView, Divider, EdgeInsets, FlexibleSpaceBar, FontWeight, GestureDetector, Icon, IconButton, IconThemeData, Icons, Image, Key, LinearGradient, ListView, MainAxisAlignment, MaterialPageRoute, MediaQuery, Navigator, Offset, Padding, Positioned, Radius, Row, Scaffold, SizedBox, SliverAppBar, SliverToBoxAdapter, Stack, State, StatefulWidget, Text, TextStyle, Widget;
+import 'package:DogMatch/views/chat/chat_service.dart';
+import 'package:DogMatch/views/home/MatchPage/Match_Page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import '../MatchPage/match_page.dart';
+import 'package:get/get.dart';
 
 class DetailsPageMobile extends StatefulWidget {
   final String Name;
@@ -8,14 +13,19 @@ class DetailsPageMobile extends StatefulWidget {
   final String descripton;
   final String interests;
   final String image;
-  final List<dynamic> urls ;
-
+  final String owneremail;
+  final List<dynamic> urls;
 
   const DetailsPageMobile({
     Key? key,
-   required this.Name, required this.age, required this.descripton, required this.interests, required this.image, required this.urls,
+    required this.Name,
+    required this.age,
+    required this.descripton,
+    required this.interests,
+    required this.image,
+    required this.urls,
+    required this.owneremail,
   }) : super(key: key);
-
 
   @override
   _DetailsPageMobileState createState() => _DetailsPageMobileState();
@@ -24,10 +34,10 @@ class DetailsPageMobile extends StatefulWidget {
 class _DetailsPageMobileState extends State<DetailsPageMobile> {
   int _selectedImageIndex = 0;
 
-
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context);
+    final ChatService _chatService = ChatService();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -120,10 +130,8 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-
                               ],
                             ),
-
                           ],
                         ),
                       ],
@@ -169,9 +177,11 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                             width: double.infinity,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: widget.urls.length + 2, // Include extra items for the padding at start and end
+                              itemCount: widget.urls.length +
+                                  2, // Include extra items for the padding at start and end
                               itemBuilder: (context, index) {
-                                if (index == 0 || index == widget.urls.length + 1) {
+                                if (index == 0 ||
+                                    index == widget.urls.length + 1) {
                                   return const SizedBox(width: 8);
                                 }
                                 return GestureDetector(
@@ -221,191 +231,59 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                           Text(
                             localization!.interestsLabel,
                             style: const TextStyle(
-                              color: Colors.black,
+                              color: Colors.deepOrange,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-
                         ],
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.shopping_cart_rounded,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.shoppingInterest,
+                     Text(
+                                  widget.interests,
                                   style: const TextStyle(
-                                    color: Colors.deepOrange,
+                                    color: Colors.black,
+                                    fontSize: 16,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.library_music,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.musicInterest,
-                                  style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.local_drink_sharp,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.coffeeInterest,
-                                  style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.menu_book_rounded,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.booksInterest,
-                                  style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.airplanemode_active,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.travelInterest,
-                                  style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(8),
-                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.sports_basketball,
-                                  color: Colors.deepOrange,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  localization.basketballInterest,
-                                  style: const TextStyle(
-                                    color: Colors.deepOrange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        localization!.description,
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          // fontWeight: FontWeight.bold,
+                      const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Description",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                      Center(
+                        child: Text(
+                          widget.descripton,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            // fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 800),
+                      
                     ],
                   ),
                 ),
@@ -418,6 +296,7 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: 64,
@@ -436,7 +315,9 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                       ],
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.back();
+                      },
                       icon: const Icon(
                         Icons.close_rounded,
                         color: Colors.deepOrange,
@@ -444,45 +325,94 @@ class _DetailsPageMobileState extends State<DetailsPageMobile> {
                       ),
                     ),
                   ),
-                  Container(
-                    height: 64,
-                    width: 64,
-                    margin: const EdgeInsets.fromLTRB(10, 16, 16, 16),
-                    decoration: BoxDecoration(
-                      gradient: new LinearGradient(
-                        end: const Alignment(0.0, 0.4),
-                        begin: const Alignment(0.0, -1),
-                        colors: <Color>[
-                          Colors.pink,
-                          Colors.deepOrange,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(100),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 0,
-                          blurRadius: 4,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MatchPage(),
+                  FirebaseAuth.instance.currentUser!.email != widget.owneremail
+                      ? Container(
+                          height: 64,
+                          width: 64,
+                          margin: const EdgeInsets.fromLTRB(10, 16, 16, 16),
+                          decoration: BoxDecoration(
+                            gradient: new LinearGradient(
+                              end: const Alignment(0.0, 0.4),
+                              begin: const Alignment(0.0, -1),
+                              colors: <Color>[
+                                Colors.pink,
+                                Colors.deepOrange,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(100),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.favorite_rounded,
-                        color: Colors.white,
-                        size: 28,
-                      ),
-                    ),
-                  ),
+                          child: IconButton(
+  onPressed: () async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MatchPage(
+          name: widget.Name,
+          image: widget.image,
+          urls: widget.urls,
+          age: widget.age,
+          description: widget.descripton,
+          interests: widget.interests,
+          ownerID: widget.owneremail,
+        ),
+      ),
+    );
+
+    // Assuming you have the userID of the interested profile
+    String interestedUserEmail = widget.owneremail; // Replace with the actual user ID
+
+    // Get the current user's UID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Reference to the current user's profile document
+    DocumentReference userDoc = FirebaseFirestore.instance.collection('Profiles').doc(currentUserID);
+
+    // Update the 'interestedProfiles' array with the new interested user ID
+    await userDoc.update({
+      'interestedProfiles': FieldValue.arrayUnion([interestedUserEmail]),
+    }).then((_) {
+      print("Interested profile added successfully!");
+    }).catchError((error) {
+      print("Failed to add interested profile: $error");
+    });
+
+    // Add liked me to the owner's document
+    String owneruid = await _chatService.getUserUIDByEmail(widget.owneremail);
+
+    print(widget.owneremail);
+    print(owneruid);
+
+    DocumentReference userDoc1 = FirebaseFirestore.instance.collection('Profiles').doc(owneruid);
+
+    // Update the 'likedme' array with the new interested user ID
+    await userDoc1.update({
+      'likedme': FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.email]),
+    }).then((_) {
+      print("LIKED ME profile added successfully!");
+    }).catchError((error) {
+      print("Failed to add LIKED ME profile: $error");
+    });
+  },
+  icon: const Icon(
+    Icons.favorite_rounded,
+    color: Colors.white,
+    size: 28,
+  ),
+)
+
+                        )
+                      : Container(
+                          height: 64,
+                          width: 64,
+                        )
                 ],
               ),
             ),
