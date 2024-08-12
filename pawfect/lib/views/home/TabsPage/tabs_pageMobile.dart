@@ -1,3 +1,4 @@
+import 'package:DogMatch/views/chatselection/chatselection.dart';
 import 'package:DogMatch/views/home/ProfileScreen/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,8 @@ class TabsPageMobile extends StatefulWidget {
 class _TabsPageMobileState extends State<TabsPageMobile> with SingleTickerProviderStateMixin {
   List<Widget> _tabs = [
     HomePage(),
-    Center(child: Icon(Icons.chat_bubble_outline)),
-    ProfileScreen(),
+    ChatSelectScreen(),
+    Profile(),
   ];
 
   late TabController _controller;
