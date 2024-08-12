@@ -292,9 +292,10 @@ class _SignUpMobileState extends State<SignUpMobile> {
           'firstName': fname,
           'lastName': lname,
         });
+        
         Navigator.of(context).pop();
         Get.snackbar("Success", "Account has been successfully created");
-        Get.offAll(() => DpUpload());
+        Get.offAll(() => DpUpload(fname: firstNameController.text, lname: lastNameController.text,));
       } else {
         Navigator.of(context).pop();
         Get.snackbar("Error", "Failed to create account");
