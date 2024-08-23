@@ -22,7 +22,7 @@ class _ChatSelectScreenState extends State<ChatSelectScreen> {
         
         body: const ResponsiveNess(
           mobile: ChatSelectionMobile(),
-          desktop: ChatSelectionDesk(),
+          desktop: ChatSelectionDesktop(),
         ));
   }
 }
