@@ -47,39 +47,39 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
     }
   }
 
-  Future<void> fetchImages() async {
-    CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
-    QuerySnapshot querySnapshot = await posts.get();
-    List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+ Future<void> fetchImages() async {
+  CollectionReference posts = FirebaseFirestore.instance.collection('Posts');
+  QuerySnapshot querySnapshot = await posts.get();
+  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
-    List<Widget> fetchedCards = [];
-    for (var doc in documents) {
-      var data = doc.data() as Map<String, dynamic>;
-      List<dynamic> urls = data['urls'];
-      String name = data['name'];
-      String age = data['age'];
-      String description = data['description'];
-      String interests = data['interests'];
-      String owner = data['ownerID'];
+  List<Widget> fetchedCards = [];
+  for (var doc in documents) {
+    var data = doc.data() as Map<String, dynamic>;
+    List<dynamic> urls = data['urls'];
+    String name = data['name'];
+    String age = data['age'];  // 'age' is correctly accessed as a String
+    String description = data['description'];
+    String interests = data['interests'];
+    String owner = data['owner'];  // Correct field name used
 
-      if (urls.isNotEmpty) {
-        fetchedCards.add(ExampleCard(
-          imageUrl: urls[0] as String,
-          name: name,
-          age: age,
-          description: description,
-          interests: interests,
-          urls: urls,
-          ownerID: owner,
-        ));
-      }
+    if (urls.isNotEmpty) {
+      fetchedCards.add(ExampleCard(
+        imageUrl: urls[0] as String,
+        name: name,
+        age: age,
+        description: description,
+        interests: interests,
+        urls: urls,
+        ownerID: owner,  // Make sure to match this with ExampleCard's constructor
+      ));
     }
-
-    setState(() {
-      cards = fetchedCards;
-      isLoading = false;
-    });
   }
+
+  setState(() {
+    cards = fetchedCards;
+    isLoading = false;
+  });
+}
 
   @override
   void dispose() {
