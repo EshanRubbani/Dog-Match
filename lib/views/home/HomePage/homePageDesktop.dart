@@ -19,11 +19,32 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
   final CardSwiperController controller = CardSwiperController();
   List<Widget> cards = [];
   bool isLoading = true;
+  String name = "";
 
   @override
   void initState() {
     super.initState();
+    fetchdata();
     fetchImages();
+  }
+
+  Future<void> fetchdata() async {
+    try {
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection("Profiles")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (doc.exists) {
+        setState(() {
+          name = doc['firstName'];
+        });
+      } else {
+        print("Document does not exist!");
+      }
+    } catch (e) {
+      print("Error fetching document: $e");
+    }
   }
 
   Future<void> fetchImages() async {
@@ -41,7 +62,6 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
       String interests = data['interests'];
       String owner = data['ownerID'];
 
-
       if (urls.isNotEmpty) {
         fetchedCards.add(ExampleCard(
           imageUrl: urls[0] as String,
@@ -49,7 +69,8 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
           age: age,
           description: description,
           interests: interests,
-          urls: urls, ownerID: owner,
+          urls: urls,
+          ownerID: owner,
         ));
       }
     }
@@ -126,7 +147,7 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
         children: [
           const SizedBox(width: 50),
           Text(
-            "Welcome ${FirebaseAuth.instance.currentUser!.email.toString()}! ",
+            "Welcome $name !",
             style: TextStyle(
               fontSize: MediaQuery.of(context).size.width * 0.019,
               fontWeight: FontWeight.bold,
@@ -195,15 +216,14 @@ class ExampleCard extends StatelessWidget {
   final List<dynamic> urls;
   final String ownerID;
 
-
-
   ExampleCard({
     required this.imageUrl,
     required this.name,
     required this.age,
     required this.description,
     required this.interests,
-    required this.urls, required this.ownerID,
+    required this.urls,
+    required this.ownerID,
   });
 
   @override
@@ -216,7 +236,8 @@ class ExampleCard extends StatelessWidget {
           descripton: description,
           urls: urls,
           interests: interests,
-          image: imageUrl, ownerID: ownerID,
+          image: imageUrl,
+          ownerID: ownerID,
         ));
       },
       child: Card(
