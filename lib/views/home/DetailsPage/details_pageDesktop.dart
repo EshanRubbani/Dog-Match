@@ -1,6 +1,9 @@
 import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/views/chat/chat_service.dart';
 import 'package:DogMatch/views/home/MatchPage/Match_Page.dart';
 import 'package:DogMatch/views/home/MatchPage/Match_Page_Desktop.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localization.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -36,6 +39,7 @@ class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
   @override
   Widget build(BuildContext context) {
     var localization = AppLocalizations.of(context);
+        final ChatService _chatService = ChatService();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Row(
@@ -63,12 +67,14 @@ class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
                   }).toList(),
                 ),
                 SizedBox(height: 20),
+                FirebaseAuth.instance.currentUser!.email != widget.owner?
                 Container(
                   height: 80,
                   width: 280,
                   child: CircleAvatar(
+                    
                       child: IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Get.to(MatchPage(
                         
                         age: widget.age,
@@ -78,11 +84,45 @@ class _DetailsPageDesktopState extends State<DetailsPageDesktop> {
                         image: widget.image,
                         urls: widget.urls, ownerID: widget.owner,
                       ));
+                          // Assuming you have the userID of the interested profile
+    String interestedUserEmail = widget.owner; // Replace with the actual user ID
+
+    // Get the current user's UID
+    String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    // Reference to the current user's profile document
+    DocumentReference userDoc = FirebaseFirestore.instance.collection('Profiles').doc(currentUserID);
+
+    // Update the 'interestedProfiles' array with the new interested user ID
+    await userDoc.update({
+      'interestedProfiles': FieldValue.arrayUnion([interestedUserEmail]),
+    }).then((_) {
+      print("Interested profile added successfully!");
+    }).catchError((error) {
+      print("Failed to add interested profile: $error");
+    });
+
+    // Add liked me to the owner's document
+    String owneruid = await _chatService.getUserUIDByEmail(widget.owner);
+
+    print(widget.owner);
+    print(owneruid);
+
+    DocumentReference userDoc1 = FirebaseFirestore.instance.collection('Profiles').doc(owneruid);
+
+    // Update the 'likedme' array with the new interested user ID
+    await userDoc1.update({
+      'likedme': FieldValue.arrayUnion([FirebaseAuth.instance.currentUser!.email]),
+    }).then((_) {
+      print("LIKED ME profile added successfully!");
+    }).catchError((error) {
+      print("Failed to add LIKED ME profile: $error");
+    });
                     },
                     icon: Icon(Icons.favorite_border_rounded,
                         color: KAppColors.darkPrimaryColor),
                   )),
-                ),
+                ): Container(),
               ],
             ),
           ),
