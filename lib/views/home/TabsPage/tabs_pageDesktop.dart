@@ -1,3 +1,4 @@
+import 'package:DogMatch/views/chatselection/chatselection.dart';
 import 'package:DogMatch/views/home/ProfileScreen/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ class TabsPageDesktop extends StatefulWidget {
 class _TabsPageDesktopState extends State<TabsPageDesktop> with SingleTickerProviderStateMixin {
   List<Widget> _tabs = [
     HomePage(),
-    Center(child: Icon(Icons.chat_bubble_outline)),
+       ChatSelectScreen(),
+
     Profile(),
   ];
 
