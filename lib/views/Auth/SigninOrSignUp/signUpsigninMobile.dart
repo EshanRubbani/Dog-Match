@@ -92,17 +92,14 @@ class _SignUpsigninMobileState extends State<SignUpsigninMobile> {
                     )
                   ],
                 ),
-                const SizedBox(
-                  height: 150,
+                 Container(
+                  height: 20,
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.4 - 100,
-                  child: Container(
-                    height: 400,
-                    width: 150,
-                    child: Image.asset('assets/logo.png'),
-                  ),
+                
+                               
+                    width: 150,   
+                  child: Image.asset('assets/logo.png'),
                 ),
                 Container(
                   height: 75,
@@ -128,9 +125,7 @@ class _SignUpsigninMobileState extends State<SignUpsigninMobile> {
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
-                        const SizedBox(
-                          height: 50,
-                        ),
+                        
                         Container(
                           width: MediaQuery.of(context).size.width / 2 + 80,
                           height: 60,
@@ -189,7 +184,7 @@ class _SignUpsigninMobileState extends State<SignUpsigninMobile> {
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Container(
                           child: Text(
@@ -203,7 +198,7 @@ class _SignUpsigninMobileState extends State<SignUpsigninMobile> {
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width / 2 + 80,

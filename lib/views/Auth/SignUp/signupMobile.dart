@@ -41,7 +41,7 @@ class _SignUpMobileState extends State<SignUpMobile> {
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.3,
-            margin: const EdgeInsets.only(bottom: 60),
+           
             width: double.infinity,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -54,7 +54,7 @@ class _SignUpMobileState extends State<SignUpMobile> {
           CustomPaint(
             size: Size(
               MediaQuery.of(context).size.width,
-              MediaQuery.of(context).size.height * 0.31,
+              MediaQuery.of(context).size.height * 0.30 ,
             ),
             painter: CurvedPainter(),
           ),
@@ -64,13 +64,17 @@ class _SignUpMobileState extends State<SignUpMobile> {
               width: double.infinity,
               child: Column(
                 children: [
-                  const SizedBox(height: 275),
+                   Container(
+                    height: MediaQuery.of(context).size.height * 0.30 -30,
+                    ),
                   Container(
-                    height: MediaQuery.of(context).size.height - 280,
+                    height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height * 0.30,
+                    color: Colors.white,
+                    
                     width: double.infinity,
                     child: Column(
                       children: [
-                        SizedBox(height: 10),
+                        
                         Hero(
                           tag: "Sign Up",
                           child: Text(
@@ -83,11 +87,11 @@ class _SignUpMobileState extends State<SignUpMobile> {
                           ),
                         ),
                         Container(
-                          height: 480,
-                          width: double.infinity,
+                      
+                         
                           child: Column(
                             children: [
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -198,10 +202,10 @@ class _SignUpMobileState extends State<SignUpMobile> {
                                       ),
                                     ),
                                   )),
-                              SizedBox(height: 30),
+                              SizedBox(height: 20),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.75,
-                                height: 60,
+                                width: MediaQuery.of(context).size.width * 0.60,
+                                height: 40,
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
@@ -230,7 +234,7 @@ class _SignUpMobileState extends State<SignUpMobile> {
                                 ),
                               ),
                               SizedBox(
-                                height: 15,
+                                height: 10,
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
