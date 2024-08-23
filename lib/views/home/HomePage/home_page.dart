@@ -9,7 +9,7 @@ const HomePage({ Key? key }) : super(key: key);
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: ResponsiveNess(mobile: HomePageMobile(), desktop: const HomePageDesktop()),
+      body: ResponsiveNess(mobile: HomePageMobile(), desktop:  HomePageDesktop()),
     );
   }
 }
