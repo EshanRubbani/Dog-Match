@@ -1,4 +1,5 @@
 import 'package:DogMatch/Helper/Constants/Colors.dart';
+import 'package:DogMatch/views/chat/chatpage.dart';
 import 'package:DogMatch/views/home/TabsPage/tabs_page.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -88,21 +89,26 @@ class _MatchPageDesktopState extends State<MatchPageDesktop> {
           
          
          
-          Container(
-            height: 56,
-            width: 350,
-           
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: const Center(
-              child: Text(
-                "Send Message !",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          GestureDetector(
+            onTap: (){
+               Get.to(Chatpage(receiverEmail: widget.owner));
+            },
+            child: Container(
+              height: 56,
+              width: 350,
+             
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: const Center(
+                child: Text(
+                  "Send Message !",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
