@@ -93,7 +93,7 @@ class _SignUpsigninMobileState extends State<SignUpsigninMobile> {
                   ],
                 ),
                 const SizedBox(
-                  height: 150,
+                  height: 50,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
